@@ -13,14 +13,17 @@ import {
   Box,
   useMediaQuery,
 } from '@mui/material';
+import Person4Icon from '@mui/icons-material/Person4';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import * as Pages from '../pages/index';
 import ThemeChangeSwitch from './ThemeChangeSwitch';
 import { navigationConfig } from './navigationConfig';
 import { useTheme, styled } from '@mui/material/styles';
-import homePageLogo from '../assets/images/webp/homePageLogo.webp';
-// import GenericPopup from '../components/popups/GenericPopup';
+import homePageLogo from '../assets/images/webp/homePageLogo.webp'; 
+import GenericPopup from '../components/popups/GenericPopup';
+import StyledIcon from '../components/wrappers/StyledIcon';
+import ProfilePopupComponent from '../components/popups/ProfilePopupComponent';
 
 // Styled Components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -51,6 +54,13 @@ const NavLink = styled(Typography)(({ theme }) => ({
   },
 }));
 
+const SettingsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection:"row",
+  alignItems: 'center',
+  gap: theme.spacing(1),
+}));
+
 const DrawerContainer = styled(Box)({
   width: 250,
 });
@@ -76,7 +86,7 @@ const renderRoutes = (routes) =>
 const RootNav = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
@@ -129,8 +139,12 @@ const RootNav = () => {
               ))}
             </NavLinksContainer>
           )}
-
+          <SettingsContainer>
+            {isMobile?<StyledIcon icon={Person4Icon}/>:<GenericPopup popupName={"Profile"} content={<ProfilePopupComponent/>}/>}
+          
           <ThemeChangeSwitch />
+          </SettingsContainer>
+          
         </StyledToolbar>
       </StyledAppBar>
 
