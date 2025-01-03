@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -12,52 +12,52 @@ import {
   ListItemText,
   Box,
   useMediaQuery,
-} from '@mui/material';
-import Person4Icon from '@mui/icons-material/Person4';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import * as Pages from '../pages/index';
-import ThemeChangeSwitch from './ThemeChangeSwitch';
-import { navigationConfig } from './navigationConfig';
-import { useTheme, styled } from '@mui/material/styles';
-import homePageLogo from '../assets/images/webp/homePageLogo.webp'; 
-import GenericPopup from '../components/popups/GenericPopup';
-import StyledIcon from '../components/wrappers/StyledIcon';
-import ProfilePopupComponent from '../components/popups/ProfilePopupComponent';
-
+} from "@mui/material";
+import Person4Icon from "@mui/icons-material/Person4";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import * as Pages from "../pages/index";
+import ThemeChangeSwitch from "./ThemeChangeSwitch";
+import { navigationConfig } from "./navigationConfig";
+import { useTheme, styled } from "@mui/material/styles";
+import homePageLogo from "../assets/images/webp/homePageLogo.webp";
+import GenericPopup from "../components/popups/GenericPopup";
+import StyledIcon from "../components/wrappers/StyledIcon";
+import ProfilePopupComponent from "../components/popups/ProfilePopupComponent";
+import { useAuth0 } from "@auth0/auth0-react";
 // Styled Components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }));
 
 const StyledToolbar = styled(Toolbar)({
-  display: 'flex',
-  justifyContent: 'space-between',
+  display: "flex",
+  justifyContent: "space-between",
 });
 
-const Logo = styled('img')({
-  height: '40px',
-  cursor: 'pointer',
+const Logo = styled("img")({
+  height: "40px",
+  cursor: "pointer",
 });
 
 const NavLinksContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+  display: "flex",
+  alignItems: "center",
   gap: theme.spacing(2),
 }));
 
 const NavLink = styled(Typography)(({ theme }) => ({
-  color: 'inherit',
-  textDecoration: 'none',
-  '&:hover': {
-    textDecoration: 'underline',
+  color: "inherit",
+  textDecoration: "none",
+  "&:hover": {
+    textDecoration: "underline",
   },
 }));
 
 const SettingsContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection:"row",
-  alignItems: 'center',
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
   gap: theme.spacing(1),
 }));
 
@@ -66,8 +66,8 @@ const DrawerContainer = styled(Box)({
 });
 
 const SearchContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+  display: "flex",
+  alignItems: "center",
   gap: theme.spacing(1),
   marginLeft: theme.spacing(2),
 }));
@@ -84,9 +84,11 @@ const renderRoutes = (routes) =>
   ));
 
 const RootNav = () => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  console.log("user", user);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
@@ -107,21 +109,14 @@ const RootNav = () => {
             </IconButton>
           )}
 
-
-
-          <NavLink
-                  key={"/"}
-                  variant="body1"
-                  component={Link}
-                  to={"/"}
-                >
-                 <Logo src={homePageLogo} alt="Home Page Logo" />
-                </NavLink>
+          <NavLink key={"/"} variant="body1" component={Link} to={"/"}>
+            <Logo src={homePageLogo} alt="Home Page Logo" />
+          </NavLink>
           <SearchContainer>
             <SearchIcon />
             <InputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ "aria-label": "search" }}
             />
           </SearchContainer>
 
@@ -140,11 +135,17 @@ const RootNav = () => {
             </NavLinksContainer>
           )}
           <SettingsContainer>
-            {isMobile?<StyledIcon icon={Person4Icon}/>:<GenericPopup popupName={"Profile"} content={<ProfilePopupComponent/>}/>}
-          
-          <ThemeChangeSwitch />
+            {isMobile ? (
+              <StyledIcon icon={Person4Icon} />
+            ) : (
+              <GenericPopup
+                popupName={isAuthenticated ? user?.given_name : "Profile"}
+                content={<ProfilePopupComponent />}
+              />
+            )}
+
+            <ThemeChangeSwitch />
           </SettingsContainer>
-          
         </StyledToolbar>
       </StyledAppBar>
 
@@ -157,12 +158,7 @@ const RootNav = () => {
         >
           <List>
             {navigationConfig.map((item) => (
-              <ListItem
-                button
-                key={item.path}
-                component={Link}
-                to={item.path}
-              >
+              <ListItem button key={item.path} component={Link} to={item.path}>
                 <ListItemText primary={item.label} />
               </ListItem>
             ))}

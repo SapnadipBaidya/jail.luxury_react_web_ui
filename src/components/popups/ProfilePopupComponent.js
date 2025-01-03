@@ -3,6 +3,7 @@ import GenericBtns from "../buttons/GenericBtns";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { Typography, Card } from "@mui/material";
+import { useAuth0 } from '@auth0/auth0-react';
 
 const NavLink = styled(Typography)(({ theme }) => ({
   color: "inherit",
@@ -19,11 +20,20 @@ const ProfilePopupComponentContainer = styled(Card)(({ theme }) => ({
   alignItem: "center",
 }));
 function ProfilePopupComponent() {
+  const { user, isAuthenticated, isLoading , logout ,loginWithRedirect} = useAuth0();
+  const HandleLogin = () => {
+    loginWithRedirect()
+  }
+
+  const HandleLogout =() => {
+    logout({ logoutParams: { returnTo: window.location.origin } })
+  }
   return (
     <ProfilePopupComponentContainer>
-      <NavLink variant="body1" component={Link} to={"/login-signup"}>
-        <GenericBtns type="secondary" btnText="Login / SignUp" />
-      </NavLink>
+
+      {
+        isAuthenticated?  <GenericBtns type="error" btnText="Logout"  executableFunction={HandleLogout}/>: <GenericBtns type="secondary" btnText="Login / SignUp" executableFunction={HandleLogin}/>
+      }
       <NavLink variant="body1" component={Link} to={"/track-orders"}> <GenericBtns type="primary" btnText="Orders" /></NavLink>
       <NavLink variant="body1" component={Link} to={"/track-orders"}> <GenericBtns type="primary" btnText="Tracking" /></NavLink>
      

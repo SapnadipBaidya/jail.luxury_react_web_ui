@@ -2,32 +2,32 @@ import React from 'react';
 import { styled } from '@mui/system';
 import { Button, useTheme } from '@mui/material';
 
-function GenericBtns({ type , btnText , defaultText="default"}) {
+function GenericBtns({ type , btnText , defaultText="default",executableFunction}) {
   const theme = useTheme();
 
   const renderButtonByType = () => {
     switch (type) {
       case 'primary':
         return (
-          <StyledButton variant="contained" color="primary">
+          <StyledButton variant="contained" color="primary" onClick={executableFunction}>
             {btnText}
           </StyledButton>
         );
       case 'secondary':
         return (
-          <StyledButton variant="outlined" color="secondary">
+          <StyledButton variant="outlined" color="secondary" onClick={executableFunction}>
             {btnText}
           </StyledButton>
         );
       case 'error':
         return (
-          <StyledButton variant="text" color="error">
+          <StyledButton variant="text" color="error" onClick={executableFunction}>
            {btnText}
           </StyledButton>
         );
       default:
         return (
-          <StyledButton variant="contained" color="primary">
+          <StyledButton variant="contained" color="primary" onClick={executableFunction}>
             Default
           </StyledButton>
         );
