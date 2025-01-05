@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography, Modal, Button, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
+import { Card } from '@mui/material';
 
 const Root = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -9,13 +11,13 @@ const Root = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   height: '60vh', // Adjust height for a larger view
-  width: '100vw',
+  width: '99vw',
   overflow: 'hidden',
   position: 'relative',
   backgroundColor: theme.palette.background.default,
 }));
 
-const ImageWrapper = styled('div')({
+const ImageWrapper = styled(Card)({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -41,18 +43,6 @@ const Image = styled('img')(({ theme }) =>({
   boxShadow: `0 0 20vh 1vh ${theme.palette.secondary.main}`, // Subtle shadow for depth
 }));
 
-const ModalContent = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[5],
-  padding: theme.spacing(4),
-  width: '90%',
-  maxWidth: 500,
-}));
 
 const products = [
   {
@@ -80,7 +70,6 @@ const products = [
 
 function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -90,67 +79,21 @@ function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleViewProduct = (product) => setSelectedProduct(product);
-
-  const handleCloseModal = () => setSelectedProduct(null);
 
   return (
     <Root>
       {products.map((product, index) => (
         <ImageWrapper
-          key={product.id}
+          key="/items"  variant="body1" component={Link} to={"/items"}
           className={index === currentIndex ? 'active' : ''}
         >
           <Image
             src={product.image}
             alt={product.name}
-            onClick={() => handleViewProduct(product)}
           />
         </ImageWrapper>
       ))}
 
-      <Modal open={!!selectedProduct} onClose={handleCloseModal}>
-        <ModalContent>
-          <IconButton
-            onClick={handleCloseModal}
-            sx={{ position: 'absolute', top: 8, right: 8 }}
-          >
-            <CloseIcon />
-          </IconButton>
-          {selectedProduct && (
-            <>
-              <img
-                src={selectedProduct.image}
-                alt={selectedProduct.name}
-                style={{
-                  width: '100%',
-                  height: '200px',
-                  objectFit: 'contain',
-                  borderRadius: '8px',
-                  marginBottom: '16px',
-                }}
-              />
-              <Typography variant="h5" gutterBottom>
-                {selectedProduct.name}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                {selectedProduct.description}
-              </Typography>
-              <Typography variant="h6" color="primary" gutterBottom>
-                {selectedProduct.price}
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
-                <Button variant="contained" fullWidth>
-                  Buy Now
-                </Button>
-                <Button variant="outlined" fullWidth>
-                  Add to Cart
-                </Button>
-              </Box>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </Root>
   );
 }
