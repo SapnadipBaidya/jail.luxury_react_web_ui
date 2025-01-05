@@ -10,11 +10,12 @@ const Root = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '60vh', // Adjust height for a larger view
+  height: '80vh', // Adjust height for a larger view
   width: '99vw',
   overflow: 'hidden',
   position: 'relative',
   backgroundColor: theme.palette.background.default,
+  border:"solid 2px red"
 }));
 
 const ImageWrapper = styled(Card)({

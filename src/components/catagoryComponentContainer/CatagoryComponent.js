@@ -46,7 +46,7 @@ function CatagoryComponent() {
 
   return (
     <CardContainer>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom style={{marginTop:"8vh",marginBottom:"4vh"}}>
         SHOP BY CATEGORY
       </Typography>
 
