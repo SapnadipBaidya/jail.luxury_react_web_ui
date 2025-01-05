@@ -4,6 +4,7 @@ import CatagoryComponent from './../components/catagoryComponentContainer/Catago
 import { styled } from '@mui/material/styles';
 import BestSellerComponent from './../components/bestSellerContainer/bestSellerComponent';
 import Footer from './Footer';
+import LocalVideoPlayer from './../components/videoPlayers/LocalVideoPlayer';
 
 
 const HomeContainer = styled("div")(({ theme}) => ({
@@ -21,6 +22,7 @@ function HomePage() {
       <HeroSection/>
       <CatagoryComponent/>
       <BestSellerComponent/>
+      <LocalVideoPlayer videoSrc="./JailLuxuryPromovid.mp4"/>
       <Footer/>
     </HomeContainer>
   );
