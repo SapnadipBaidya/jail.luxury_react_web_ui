@@ -88,7 +88,7 @@ const RootNav = () => {
   console.log("user", user);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
@@ -98,7 +98,7 @@ const RootNav = () => {
     <Router>
       <StyledAppBar position="sticky">
         <StyledToolbar>
-          {isMobile && (
+          {isTablet && (
             <IconButton
               edge="start"
               color="inherit"
@@ -120,7 +120,7 @@ const RootNav = () => {
             />
           </SearchContainer>
 
-          {!isMobile && (
+          {!isTablet && (
             <NavLinksContainer>
               {navigationConfig.map((item) => (
                 <NavLink
@@ -135,7 +135,7 @@ const RootNav = () => {
             </NavLinksContainer>
           )}
           <SettingsContainer>
-            {isMobile ? (
+            {isTablet ? (
               <StyledIcon icon={Person4Icon} />
             ) : (
               <GenericPopup

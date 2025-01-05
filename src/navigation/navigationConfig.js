@@ -34,5 +34,15 @@ export const navigationConfig = [
     label: "",
     path: '/login-signup',
     component: 'LoginSignup',
+  },
+  {
+    label: "",
+    path: '/items',
+    component: 'Items',
+  },
+  {
+    label: "",
+    path: '/product',
+    component: 'Product',
   }
 ];
