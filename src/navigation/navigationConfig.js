@@ -22,6 +22,11 @@ export const navigationConfig = [
   },
   {
     label: "",
+    path: '/orders',
+    component: 'Orders',
+  },
+  {
+    label: "",
     path: '/track-orders',
     component: 'TrackOrders',
   },

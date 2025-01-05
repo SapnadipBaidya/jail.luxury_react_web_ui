@@ -2,12 +2,31 @@ import * as React from 'react';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import { styled } from '@mui/system';
 
-export default function GenericPopup({popupName,content}) {
+export default function GenericPopup({ popupName, content }) {
   const [anchor, setAnchor] = React.useState(null);
+  const popupRef = React.useRef(null);
 
   const handleClick = (event) => {
-    setAnchor(anchor ? null : event.currentTarget);
+    event.stopPropagation(); // Prevent event bubbling
+    setAnchor((prevAnchor) => (prevAnchor ? null : event.currentTarget));
   };
+
+  const handleClickOutside = (event) => {
+    if (
+      popupRef.current &&
+      !popupRef.current.contains(event.target) &&
+      event.target.getAttribute('aria-describedby') !== 'simple-popup'
+    ) {
+      setAnchor(null);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const open = Boolean(anchor);
   const id = open ? 'simple-popup' : undefined;
@@ -15,29 +34,32 @@ export default function GenericPopup({popupName,content}) {
   return (
     <div style={{ position: 'relative' }}>
       <Button aria-describedby={id} type="button" onClick={handleClick}>
-       {popupName}
+        {popupName}
       </Button>
-      <BasePopup
-        id={id}
-        open={open}
-        anchor={anchor}
-        modifiers={[
-          {
-            name: 'preventOverflow',
-            options: {
-              boundary: 'viewport',
+      {open && (
+        <BasePopup
+          id={id}
+          open={open}
+          anchor={anchor}
+          ref={popupRef}
+          modifiers={[
+            {
+              name: 'preventOverflow',
+              options: {
+                boundary: 'viewport',
+              },
             },
-          },
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 10],
+            {
+              name: 'offset',
+              options: {
+                offset: [0, 10],
+              },
             },
-          },
-        ]}
-      >
-        <PopupBody>{content}</PopupBody>
-      </BasePopup>
+          ]}
+        >
+          <PopupBody>{content}</PopupBody>
+        </BasePopup>
+      )}
     </div>
   );
 }
