@@ -12,7 +12,7 @@ const BestSellerComp = styled(Card)(({ theme }) => ({
     alignItem: "center",
     border:"solid 2px red",
     height:"45vh",
-    width:"40vh"
+    width:"90vh"
   }));
 
 

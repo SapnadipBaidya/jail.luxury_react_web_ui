@@ -12,7 +12,7 @@ const BestSellerContainer = styled(Card)(({ theme, isTablet }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   border: "solid 2px red",
-  width: "45vw",
+  width: "80vw",
   padding: theme.spacing(2), // Add some padding for spacing
   gap: theme.spacing(2), // Add spacing between cards
 }));
@@ -24,13 +24,13 @@ function BestSellerComponent() {
   return (
     <div
       style={{
-        border: "solid 2px red",
+        border: "solid 2px blue",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-evenly",
         alignItems: "center",
         padding: "1vh",
-        width: "60vw",
+        width: "90vw",
       }}
     >
       <Typography style={{ padding: "2vh" }}>OUR BEST SELLERS</Typography>

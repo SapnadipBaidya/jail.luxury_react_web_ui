@@ -7,7 +7,7 @@ export const lightTheme = createTheme({
       main: '#573C2C',
     },
     secondary: {
-      main: '#CCB878',
+      main: '#625F59',
     },
     background: {
       default: '#E9E9E9',
