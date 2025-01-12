@@ -5,6 +5,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createRoot } from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
+import store from "./store/store";
+import { Provider } from "react-redux";
 
 const root = createRoot(document.getElementById("root"));
 
@@ -16,7 +18,8 @@ root.render(
       redirect_uri: window.location.origin,
     }}
   >
-    <App />
+     <Provider store={store}><App /></Provider>
+    
   </Auth0Provider>
 );
 reportWebVitals();

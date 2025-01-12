@@ -1,100 +1,82 @@
-import React, { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
-import { Box, Typography, Modal, Button, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { Link } from 'react-router-dom';
-import { Card } from '@mui/material';
+import React, { useState } from "react";
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import ImageWrapper from "../components/wrappers/ImageWrapper";
+import useDebounce from "../utils/customHooks/useDebounce";
 
 const Root = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '80vh', // Adjust height for a larger view
-  width: '99vw',
-  overflow: 'hidden',
-  position: 'relative',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "80vh",
+  width: "99vw",
+  overflow: "hidden",
+  position: "relative",
   backgroundColor: theme.palette.background.default,
-  border:"solid 2px red"
 }));
 
-const ImageWrapper = styled(Card)({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  transition: 'opacity 0.5s ease-in-out, transform 2s ease-in-out',
-  opacity: 0,
-  transform: 'scale(1.3)', // Slight zoom-out effect for inactive images
-  '&.active': {
-    opacity: 1,
-    transform: 'scale(1)', // Normal scale for active image
-  },
-});
-
-const Image = styled('img')(({ theme }) =>({
-  maxWidth: '100%',
-  maxHeight: '100%',
-  objectFit: 'contain', // Maintains natural aspect ratio
-  borderRadius: '0.5vh', // Rounded corners for a sleek look
-  boxShadow: `0 0 20vh 1vh ${theme.palette.secondary.main}`, // Subtle shadow for depth
+const DotsWrapper = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  position: "absolute",
+  bottom: "20px",
+  gap: "10px",
 }));
 
-
-const products = [
-  {
-    id: 1,
-    name: 'Product 1',
-    description: 'An amazing product you’ll love!',
-    price: '$19.99',
-    image: 'https://i.etsystatic.com/23404246/r/il/f97bdc/3328937792/il_570xN.3328937792_bwcq.jpg',
-  },
-  {
-    id: 2,
-    name: 'Product 2',
-    description: 'A high-quality item at an affordable price.',
-    price: '$29.99',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGd7wWa2lGU6jjTCLs9XqZGiW9EDa_16fAAw&s',
-  },
-  {
-    id: 3,
-    name: 'Product 3',
-    description: 'A premium product for discerning customers.',
-    price: '$49.99',
-    image: 'https://wallpapers.com/images/hd/joker-portrait-4k-ultra-hd-tpwswk8yfmmfencg.jpg',
-  },
-];
+const Dot = styled("div")(({ theme, active }) => ({
+  width: "12px",
+  height: "12px",
+  borderRadius: "50%",
+  backgroundColor: active ? theme.palette.primary.main : theme.palette.grey[400],
+  cursor: "pointer",
+  transition: "background-color 0.3s ease",
+}));
 
 function HeroSection() {
+  const category = useSelector((state) => state.categoryReducer);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
-    }, 5000); // Change image every 5 seconds
+  // Debounced auto-slider effect
+  const autoSlide = useDebounce(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % category?.data?.length);
+  }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
+  // Trigger the autoSlide function continuously
+  React.useEffect(() => {
+    autoSlide();
+  }, [currentIndex, autoSlide]);
 
+  const handleDotClick = (index) => {
+    setCurrentIndex(index);
+  };
 
   return (
     <Root>
-      {products.map((product, index) => (
+      {category?.data?.map((product, index) => (
         <ImageWrapper
-          key="/items"  variant="body1" component={Link} to={"/items"}
-          className={index === currentIndex ? 'active' : ''}
-        >
-          <Image
-            src={product.image}
-            alt={product.name}
-          />
-        </ImageWrapper>
+          key={product.catagory_id} // Ensure unique key for each item
+          product={product}
+          component={Link}
+          index={index}
+          currentIndex={currentIndex}
+          to={"/items"}
+        />
       ))}
 
+      {/* Dots Navigation */}
+      <DotsWrapper>
+        {category?.data?.map((_, index) => (
+          <Dot
+            key={index}
+            active={index === currentIndex}
+            onClick={() => handleDotClick(index)}
+          />
+        ))}
+      </DotsWrapper>
     </Root>
   );
 }
