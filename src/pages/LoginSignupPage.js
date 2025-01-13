@@ -1,10 +1,10 @@
 import {React,useEffect} from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth } from "../contexts/AuthProvider";
 
 const LoginSignupPage = () => {
-  const { loginWithRedirect } = useAuth0();
+  const { user, login, logout, accessToken, refreshAccessToken } = useAuth();
 useEffect(() => {
-    loginWithRedirect()
+  login()
 
 
 }, [])

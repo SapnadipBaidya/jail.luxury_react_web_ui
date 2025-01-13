@@ -19,3 +19,9 @@ export async function makeGetAPIcall (url){
       return error;
     }
 }
+
+
+const API = axios.create({ baseURL: "http://localhost:8080" });
+
+export const googleLogin = () => API.get("/auth/google");
+export const refreshToken = () => API.get("/auth/refresh");

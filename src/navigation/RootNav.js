@@ -24,7 +24,7 @@ import homePageLogo from "../assets/images/webp/homePageLogo.webp";
 import GenericPopup from "../components/popups/GenericPopup";
 import StyledIcon from "../components/wrappers/StyledIcon";
 import ProfilePopupComponent from "../components/popups/ProfilePopupComponent";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth } from "../contexts/AuthProvider";
 // Styled Components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -84,7 +84,7 @@ const renderRoutes = (routes) =>
   ));
 
 const RootNav = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, login, logout, accessToken, refreshAccessToken } = useAuth();
   console.log("user", user);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
@@ -140,7 +140,7 @@ const RootNav = () => {
               <StyledIcon icon={Person4Icon} />
             ) : (
               <GenericPopup
-                popupName={isAuthenticated ? user?.given_name : "Profile"}
+                popupName={user ? user?.name : "Profile"}
                 content={<ProfilePopupComponent />}
               />
             )}

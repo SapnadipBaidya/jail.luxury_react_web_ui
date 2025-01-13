@@ -1,11 +1,11 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth } from '../contexts/AuthProvider';
 
 function WishListPage() {
-  const { loginWithRedirect, logout, getAccessTokenSilently, isAuthenticated, user } = useAuth0();
+  const { user, login, logout, accessToken, refreshAccessToken } = useAuth();
   return (
     <div>
-      {isAuthenticated?<>wishlist page</>:<>Please Login</>}
+      {user?<>wishlist page</>:<>Please Login</>}
       
     </div>
   );

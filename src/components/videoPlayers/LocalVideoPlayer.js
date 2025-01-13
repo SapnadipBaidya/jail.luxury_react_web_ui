@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { Box, useMediaQuery, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 // Styled container for the video and text
-const VideoContainer = styled(Box)(({ theme, isMobile , mode}) => ({
+const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
   width: "90%",
   height: "100%",
   display: "flex",
@@ -15,12 +15,25 @@ const VideoContainer = styled(Box)(({ theme, isMobile , mode}) => ({
   boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
   padding: theme.spacing(2),
   gap: theme.spacing(2),
-
-  // Use the image as the background
-  backgroundImage: mode == "dark" ? "url('./webps/darkmodeBackgroundImg.webp')":"url('./webps/lightmodeBackgroundImg.webp')",
-  backgroundSize: "cover", // Make the background cover the container
-  backgroundRepeat: "no-repeat", // Prevent the image from repeating
-  backgroundPosition: "center", // Center the image
+  position: "relative", // Make this container relative to position overlay
+  // Transparent overlay for the background image
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage:
+      mode === "dark"
+        ? "url('./webps/darkmodeBackgroundImg.webp')"
+        : "url('./webps/lightmodeBackgroundImg.webp')",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    opacity: 0.4, // Set transparency for the background image
+    zIndex: -1, // Place the image behind the content
+  },
 }));
 
 // Styled container for the description
