@@ -123,6 +123,7 @@ const RootNav = () => {
           {!isTablet && (
             <NavLinksContainer>
               {navigationConfig.map((item) => (
+                item.render?
                 <NavLink
                   key={item.path}
                   variant="body1"
@@ -130,7 +131,7 @@ const RootNav = () => {
                   to={item.path}
                 >
                   {item.label}
-                </NavLink>
+                </NavLink>:null
               ))}
             </NavLinksContainer>
           )}

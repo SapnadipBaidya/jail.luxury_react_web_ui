@@ -6,12 +6,11 @@ import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 
 // Styled container for the Best Seller cards
-const BestSellerContainer = styled(Card)(({ theme, isTablet }) => ({
+const BestSellerContainer = styled("div")(({ theme, isTablet }) => ({
   display: "flex",
   flexDirection: isTablet ? "column" : "row", // Stack vertically on tablets
   justifyContent: "space-between",
   alignItems: "center",
-  border: "solid 2px red",
   width: "80vw",
   padding: theme.spacing(2), // Add some padding for spacing
   gap: theme.spacing(2), // Add spacing between cards
@@ -24,7 +23,6 @@ function BestSellerComponent() {
   return (
     <div
       style={{
-        border: "solid 2px blue",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-evenly",
@@ -33,13 +31,15 @@ function BestSellerComponent() {
         width: "90vw",
       }}
     >
-      <Typography style={{ padding: "2vh" }}>OUR BEST SELLERS</Typography>
+      <Typography variant="h5" style={{ padding: "2vh" }}>OUR BEST SELLERS</Typography>
       <BestSellerContainer isTablet={isTablet}>
         <BestSellerCard
           title="LADIES"
+          videoSrc="./elegantShe.mp4"
         />
         <BestSellerCard
           title="GENTLEMEN"
+          videoSrc="./elegantMan.mp4"
         />
       </BestSellerContainer>
     </div>

@@ -22,7 +22,12 @@ function HomePage() {
       <HeroSection/>
       <CatagoryComponent/>
       <BestSellerComponent/>
-      <LocalVideoPlayer videoSrc="./JailLuxuryPromovid.mp4"/>
+      <LocalVideoPlayer videoSrc="./JailLuxuryPromovid.mp4" desc={<><h1>WHY JAIL ?</h1>
+        The name “Jail” is more than just a brand; it’s a nod to our roots. The
+        original shop was located on Jail Road in Banka, and the name was born
+        out of the simplicity of directions—“Jail Road, Jail Road.” Today, it
+        stands as a symbol of our journey, from a small shop in Bihar to a
+        luxury brand that resonates with customers around the world.</>}/>
       <Footer/>
     </HomeContainer>
   );

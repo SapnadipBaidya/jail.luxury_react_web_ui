@@ -6,43 +6,51 @@ import StyledIcon from '../components/wrappers/StyledIcon';
 
 export const navigationConfig = [
   {
-    label: "",
+    label: "Home",
     path: '/',
     component: 'Home',
+    render:false
   },
   {
     label: <StyledIcon icon={ShoppingCartOutlinedIcon} />,
     path: '/cart',
     component: 'Cart',
+    render:true
   },
   {
     label: <StyledIcon icon={FavoriteBorderOutlinedIcon} />,
     path: '/wishlist',
     component: 'WishList',
+    render:true
   },
   {
-    label: "",
+    label: "Orders",
     path: '/orders',
     component: 'Orders',
+    render:false
   },
   {
-    label: "",
+    label: "Track Orders",
     path: '/track-orders',
     component: 'TrackOrders',
+    render:false
   },
   {
-    label: "",
+    label: "Login Signup",
     path: '/login-signup',
     component: 'LoginSignup',
+    render:false
   },
   {
-    label: "",
+    label: "Items",
     path: '/items',
     component: 'Items',
+    render:false
   },
   {
-    label: "",
+    label: "Product",
     path: '/product',
     component: 'Product',
+    render:false
   }
 ];

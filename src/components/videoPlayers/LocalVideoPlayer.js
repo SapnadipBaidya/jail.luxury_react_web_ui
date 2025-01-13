@@ -32,7 +32,7 @@ const VideoDescContainer = styled(Typography)(({ theme }) => ({
   color:theme.palette.secondary.main
 }));
 
-const LocalVideoPlayer = ({ videoSrc }) => {
+const LocalVideoPlayer = ({ videoSrc , desc}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 console.log("mode",theme.palette.mode)
@@ -55,13 +55,8 @@ console.log("mode",theme.palette.mode)
 
      
       <VideoDescContainer>
-      <h1>WHY JAIL ?</h1>
-        The name “Jail” is more than just a brand; it’s a nod to our roots. The
-        original shop was located on Jail Road in Banka, and the name was born
-        out of the simplicity of directions—“Jail Road, Jail Road.” Today, it
-        stands as a symbol of our journey, from a small shop in Bihar to a
-        luxury brand that resonates with customers around the world.
-
+      
+      {desc}
         
       </VideoDescContainer>
       </div>
