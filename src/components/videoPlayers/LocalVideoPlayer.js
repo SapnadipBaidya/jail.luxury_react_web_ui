@@ -31,7 +31,6 @@ const VideoContainer = styled(Box)(({ theme, isMobile, mode }) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
-    opacity: 0.4, // Set transparency for the background image
     zIndex: -1, // Place the image behind the content
   },
 }));

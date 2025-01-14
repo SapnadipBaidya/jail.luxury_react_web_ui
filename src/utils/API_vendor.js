@@ -21,7 +21,6 @@ export async function makeGetAPIcall (url){
 }
 
 
-const API = axios.create({ baseURL: "http://localhost:8080" });
-
+const API = axios.create({ baseURL: "http://localhost:8080",withCredentials: true });
 export const googleLogin = () => API.get("/auth/google");
 export const refreshToken = () => API.get("/auth/refresh");

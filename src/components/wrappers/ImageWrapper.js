@@ -16,9 +16,11 @@ const ImageWrapperComp = styled(Card)({
   transition: "opacity 0.5s ease-in-out, transform 2s ease-in-out",
   opacity: 0,
   transform: "scale(1.3)",
+  pointerEvents:"none",
   "&.active": {
     opacity: 1,
     transform: "scale(1)",
+    pointerEvents:"all",
   },
 });
 const Image = styled("img")({
@@ -39,9 +41,7 @@ function ImageWrapper({ product, index, currentIndex, to }) {
       <Image
         src={product.catagory_img}
         alt={product.name}
-        onClick={(e) => {
-          e.preventDefault();
-          console.log("Dispatched Category ID:", product?.catagory_id);
+        onClick={() => {
           dispatch(findItemsByCatagoryId(product?.catagory_id));
         }}
       />

@@ -31,7 +31,9 @@ const Dot = styled("div")(({ theme, active }) => ({
   width: "12px",
   height: "12px",
   borderRadius: "50%",
-  backgroundColor: active ? theme.palette.primary.main : theme.palette.grey[400],
+  backgroundColor: active
+    ? theme.palette.primary.main
+    : theme.palette.secondary.main,
   cursor: "pointer",
   transition: "background-color 0.3s ease",
 }));
@@ -58,7 +60,7 @@ function HeroSection() {
     <Root>
       {category?.data?.map((product, index) => (
         <ImageWrapper
-          key={product.catagory_id} // Ensure unique key for each item
+          categoryKey={product.catagory_id} // Ensure unique key for each item
           product={product}
           component={Link}
           index={index}

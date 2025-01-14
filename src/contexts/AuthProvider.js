@@ -5,16 +5,22 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
   });
 
   const [accessToken, setAccessToken] = useState(() => {
     return localStorage.getItem("accessToken") || "";
   });
 
-  const [refreshToken, setRefreshToken] = useState(() => {
-    return localStorage.getItem("refreshToken") || "";
+  const [isLoading, setIsLoading] = useState(false);
+
+  const apiClient = axios.create({
+    baseURL: "http://localhost:8080",
+    withCredentials: true,
   });
 
   const login = () => {
@@ -23,42 +29,24 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      // Get the user object from localStorage
-      const user = JSON.parse(localStorage.getItem("user"));
-  
-      // Make a request to the backend to handle server-side logout (optional)
-      if (user) {
-        await fetch("http://localhost:8080/logout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ user }),
-        });
-      }
-  
-      // Clear client-side user data
-      setUser(null);
-      setAccessToken("");
-      setRefreshToken("");
-      localStorage.removeItem("user");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-  
-      // Redirect to logout URL
-      window.open("http://localhost:8080/logout", "_self");
+      await apiClient.post("/logout");
+      clearAuthData();
     } catch (error) {
       console.error("Error during logout:", error);
     }
   };
-  
+
+  const clearAuthData = () => {
+    setUser(null);
+    setAccessToken("");
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+  };
+
   const refreshAccessToken = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8080/auth/refresh", {
-        withCredentials: true,
-      });
-      setAccessToken(data.accessToken);
-      localStorage.setItem("accessToken", data.accessToken);
+      const { data } = await apiClient.get("/auth/refresh");
+      updateAccessToken(data.accessToken);
     } catch (error) {
       console.error("Failed to refresh token:", error);
       logout(); // Log out if token refresh fails
@@ -66,30 +54,42 @@ export const AuthProvider = ({ children }) => {
   };
 
   const fetchUserData = async () => {
+    if (!accessToken) return;
+
     try {
-      const { data } = await axios.get("http://localhost:8080/success", {
-        withCredentials: true,
+      setIsLoading(true);
+
+      const { data } = await apiClient.get("/success", {
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
+
       setUser(data.user);
-      setAccessToken(data.accessToken);
-      setRefreshToken(data.refreshToken);
       localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
     } catch (error) {
       console.error("Failed to fetch user data:", error);
+
+      if (error.response?.status === 401) {
+        await refreshAccessToken();
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleTokenFromUrl = async () => {
     const query = new URLSearchParams(window.location.search);
     const token = query.get("token");
+
     if (token) {
-      setAccessToken(token);
-      localStorage.setItem("accessToken", token);
-      window.history.replaceState(null, null, "/"); // Clean up the URL
-      await fetchUserData(); // Fetch user data after setting the token
+      updateAccessToken(token);
+      window.history.replaceState(null, null, "/"); // Clean up URL
+      await fetchUserData();
     }
+  };
+
+  const updateAccessToken = (token) => {
+    setAccessToken(token);
+    localStorage.setItem("accessToken", token);
   };
 
   useEffect(() => {
@@ -97,18 +97,19 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // Automatically refresh the token before it expires
-    const interval = setInterval(() => {
-      refreshAccessToken();
-    }, 1000 * 60 * 5); // Refresh every 5 minutes (adjust based on token expiration time)
+    if (accessToken) {
+      fetchUserData();
 
-    return () => clearInterval(interval);
+      const interval = setInterval(() => {
+        refreshAccessToken();
+      }, 1000 * 60 * 30); // Refresh every 30 minutes
+
+      return () => clearInterval(interval); // Cleanup on unmount
+    }
   }, [accessToken]);
 
   return (
-    <AuthContext.Provider
-      value={{ user, accessToken, login, logout, refreshAccessToken }}
-    >
+    <AuthContext.Provider value={{ user, accessToken, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

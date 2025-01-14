@@ -62,7 +62,7 @@ const Spinner = styled(Box)(({ theme, radius = "13vh" }) => ({
 function CircleComponent({ data }) {
   const [isLoaded, setIsLoaded] = useState(false); // Track if the image has loaded
   const dispatch = useDispatch();
-console.log("data",data)
+  
   const handleImageLoad = () => {
     setIsLoaded(true); // Set loaded state to true when the image finishes loading
   };
