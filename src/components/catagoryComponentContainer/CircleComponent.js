@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { findItemsByCatagoryId } from '../../store/actions/itemActions';
+import { deleteCatagoryIdGlobally, storeCatagoryIdGlobally } from '../../store/actions/itemActions';
 
 // Wrapper for the entire circle and text
 const CircleWrapper = styled(Box)(({ theme }) => ({
@@ -67,6 +67,11 @@ function CircleComponent({ data }) {
     setIsLoaded(true); // Set loaded state to true when the image finishes loading
   };
 
+  const handleClick = async(id)=>{
+   dispatch(deleteCatagoryIdGlobally())
+   dispatch(storeCatagoryIdGlobally(id))
+  }
+
   return (
     <CircleWrapper>
       <CircleContainer radius="12.5vh" key={"/items"} component={Link} to={"/items"}>
@@ -81,7 +86,7 @@ function CircleComponent({ data }) {
           alt={data?.catagory_name + " Image "}
           onLoad={handleImageLoad} // Triggered when the image loads
           style={{ display: isLoaded ? "block" : "none" }} // Hide the image until it's loaded
-          onClick={(e)=>dispatch(findItemsByCatagoryId(data?.catagory_id))}
+          onClick={(e)=>handleClick(data?.catagory_id)}
         />
       </CircleContainer>
       <CircleText>{data?.catagory_name}</CircleText>

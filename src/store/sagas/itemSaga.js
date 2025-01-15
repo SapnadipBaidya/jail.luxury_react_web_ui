@@ -6,11 +6,12 @@ import {  makePostAPIcall } from "../../utils/API_vendor";
 function* handleFindAllProductsByCatagoryId() {
   try {
    
-    const payload = yield select((state=>state?.itemReducer?.payload))
-
-    const category = yield call(makePostAPIcall("http://localhost:8080/api/products/findAllProductsByCatagoryId",{"categoryId":payload}));
-    yield put({type:"FETCH_ITEMS_BY_CATEGORY_SUCCESS",response:category});
+    const resPayload = {categoryId:yield select((state=>state?.itemReducer?.payload))}
+    const response = yield call(makePostAPIcall,"http://localhost:8080/api/products/findAllProductsByCatagoryId",resPayload);
+    console.log("response",response)
+    yield put({type:"FETCH_ITEMS_BY_CATEGORY_SUCCESS",payload:response?.data?.data});
   } catch (error) {
+    console.log(error)
     yield put({type:"FETCH_ITEMS_BY_CATEGORY_FAILURE",error:error.message});
   }
 }

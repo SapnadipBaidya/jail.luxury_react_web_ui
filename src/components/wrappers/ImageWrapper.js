@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { findItemsByCatagoryId } from "../../store/actions/itemActions";
+import { deleteCatagoryIdGlobally, storeCatagoryIdGlobally } from "../../store/actions/itemActions";
 const ImageWrapperComp = styled(Card)({
   position: "absolute",
   top: 0,
@@ -30,6 +30,12 @@ const Image = styled("img")({
 });
 function ImageWrapper({ product, index, currentIndex, to }) {
   const dispatch = useDispatch();
+
+    const handleClick =(id)=>{
+     dispatch(deleteCatagoryIdGlobally())
+     dispatch(storeCatagoryIdGlobally(id))
+    }
+  
   return (
     <ImageWrapperComp
       key={product?.catagory_id}
@@ -37,13 +43,13 @@ function ImageWrapper({ product, index, currentIndex, to }) {
       component={Link}
       to={to}
       className={index === currentIndex ? "active" : ""}
+      onClick={(e) => {
+        handleClick(product?.catagory_id);
+      }}
     >
       <Image
         src={product.catagory_img}
         alt={product.name}
-        onClick={() => {
-          dispatch(findItemsByCatagoryId(product?.catagory_id));
-        }}
       />
     </ImageWrapperComp>
   );

@@ -4,8 +4,6 @@ import {
   Box,
   Grid,
   Typography,
-  Pagination,
-  Button,
   Slider,
   Checkbox,
   FormControlLabel,
@@ -13,10 +11,10 @@ import {
   Select,
   MenuItem,
   Card,
-  CardContent,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { fetchCategoryById } from '../store/actions/categoryActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { findItemsByCatagoryId } from '../store/actions/itemActions';
 
 const ProductWrapper = styled(Box)(({ theme, radius = "8vh" }) => ({
   display: 'flex',
@@ -45,29 +43,21 @@ const StyledCard = styled(Card)({
   },
 });
 
-const products = Array.from({ length: 100 }, (_, index) => ({
-  id: index + 1,
-  name: `Product ${index + 1}`,
-  price: `$${(Math.random() * 100).toFixed(2)}`,
-  image: 'https://via.placeholder.com/150',
-}));
 
 function ItemsPage() {
+  const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const itemsPerPage = 9;
+  const categoryId = useSelector((state)=>state.idStorageReducer.id)
+  console.log("categoryId",categoryId)
+ useEffect(() => {
+  dispatch(findItemsByCatagoryId(categoryId))
+}, [])
 
   const handlePageChange = (event, value) => {
     setPage(value);
   };
 
-  useEffect(() => {
-    fetchCategoryById(0)
-  }, [])
-  
- 
-
-  const startIndex = (page - 1) * itemsPerPage;
-  const selectedProducts = products.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div>
@@ -149,7 +139,7 @@ function ItemsPage() {
           </Box>
 
           <Grid container spacing={3}>
-            {selectedProducts.map((product) => (
+            {/* {selectedProducts.map((product) => (
               <Grid item xs={12} sm={6} md={4} key={product.id}>
                 <StyledCard>
                   <img
@@ -173,18 +163,18 @@ function ItemsPage() {
                   </CardContent>
                 </StyledCard>
               </Grid>
-            ))}
+            ))} */}
           </Grid>
 
           {/* Pagination */}
-          <Box mt={3} display="flex" justifyContent="center">
+          {/* <Box mt={3} display="flex" justifyContent="center">
             <Pagination
               count={Math.ceil(products.length / itemsPerPage)}
               page={page}
               onChange={handlePageChange}
               color="primary"
             />
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </div>

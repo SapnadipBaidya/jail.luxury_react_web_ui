@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import {
   AppBar,
@@ -13,18 +13,21 @@ import {
   Box,
   useMediaQuery,
 } from "@mui/material";
+import { useTheme, styled } from "@mui/material/styles";
 import Person4Icon from "@mui/icons-material/Person4";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import * as Pages from "../pages/index";
 import ThemeChangeSwitch from "./ThemeChangeSwitch";
 import { navigationConfig } from "./navigationConfig";
-import { useTheme, styled } from "@mui/material/styles";
 import homePageLogo from "../assets/images/webp/homePageLogo.webp";
 import GenericPopup from "../components/popups/GenericPopup";
 import StyledIcon from "../components/wrappers/StyledIcon";
 import ProfilePopupComponent from "../components/popups/ProfilePopupComponent";
+import * as Pages from "../pages/index";
 import { useAuth } from "../contexts/AuthProvider";
+import { useDispatch } from "react-redux";
+import { fetchAllCategories } from "../store/actions/categoryActions";
+
 // Styled Components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -46,25 +49,6 @@ const NavLinksContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-const NavLink = styled(Typography)(({ theme }) => ({
-  color: "inherit",
-  textDecoration: "none",
-  "&:hover": {
-    textDecoration: "underline",
-  },
-}));
-
-const SettingsContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  gap: theme.spacing(1),
-}));
-
-const DrawerContainer = styled(Box)({
-  width: 250,
-});
-
 const SearchContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -72,27 +56,34 @@ const SearchContainer = styled(Box)(({ theme }) => ({
   marginLeft: theme.spacing(2),
 }));
 
+const DrawerContainer = styled(Box)({
+  width: 250,
+});
+
 const renderRoutes = (routes) =>
-  routes.map((route) => (
+  routes.map(({ path, component, children }) => (
     <Route
-      key={route.path}
-      path={route.path}
-      element={React.createElement(Pages[route.component])}
+      key={path}
+      path={path}
+      element={React.createElement(Pages[component])}
     >
-      {route.children && renderRoutes(route.children)}
+      {children && renderRoutes(children)}
     </Route>
   ));
 
 const RootNav = () => {
-  const { user, login, logout, accessToken, refreshAccessToken } = useAuth();
-  console.log("user", user);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user } = useAuth();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
-  const toggleDrawer = (open) => () => {
-    setDrawerOpen(open);
-  };
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchAllCategories());
+  }, [dispatch]);
+
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
 
   return (
     <Router>
@@ -109,44 +100,44 @@ const RootNav = () => {
             </IconButton>
           )}
 
-          <NavLink key={"/"} variant="body1" component={Link} to={"/"}>
+          <Link to={"/"}>
             <Logo src={homePageLogo} alt="Home Page Logo" />
-          </NavLink>
+          </Link>
+
           <SearchContainer>
             <SearchIcon />
-            <InputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
+            <InputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
           </SearchContainer>
 
           {!isTablet && (
             <NavLinksContainer>
-              {navigationConfig.map((item) => (
-                item.render?
-                <NavLink
-                  key={item.path}
-                  variant="body1"
-                  component={Link}
-                  to={item.path}
-                >
-                  {item.label}
-                </NavLink>:null
-              ))}
+              {navigationConfig
+                .filter((item) => item.render)
+                .map(({ path, label }) => (
+                  <Typography
+                    key={path}
+                    variant="body1"
+                    component={Link}
+                    to={path}
+                    style={{ color: "inherit", textDecoration: "none" }}
+                  >
+                    {label}
+                  </Typography>
+                ))}
             </NavLinksContainer>
           )}
-          <SettingsContainer>
+
+          <Box display="flex" alignItems="center" gap={1}>
             {isTablet ? (
               <StyledIcon icon={Person4Icon} />
             ) : (
               <GenericPopup
-                popupName={user ? user?.name : "Profile"}
+                popupName={user ? user.name : "Profile"}
                 content={<ProfilePopupComponent />}
               />
             )}
-
             <ThemeChangeSwitch />
-          </SettingsContainer>
+          </Box>
         </StyledToolbar>
       </StyledAppBar>
 
@@ -158,9 +149,9 @@ const RootNav = () => {
           onKeyDown={toggleDrawer(false)}
         >
           <List>
-            {navigationConfig.map((item) => (
-              <ListItem button key={item.path} component={Link} to={item.path}>
-                <ListItemText primary={item.label} />
+            {navigationConfig.map(({ path, label }) => (
+              <ListItem button key={path} component={Link} to={path}>
+                <ListItemText primary={label} />
               </ListItem>
             ))}
           </List>
