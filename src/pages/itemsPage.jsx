@@ -20,6 +20,15 @@ function ItemsPage() {
   const itemsArr = useSelector((state) => state.itemReducer);
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
 
+
+  const [showFilters, setShowFilters] = useState(false);
+  const [page, setPage] = useState(1);
+  const [currentFilterData, setCurrentFilterData] = useState({
+    gender: "",
+    size: [],
+    color: [],
+    price: [0, 1000000],
+  });
   const [selectedFilters, setSelectedFilters] = useState({
     gender: "",
     size: [],
@@ -27,31 +36,28 @@ function ItemsPage() {
     price: [0, 1000000],
   });
 
-  const [showFilters, setShowFilters] = useState(false);
-  const [page, setPage] = useState(1);
-
-  const fetchItems = useCallback(() => {
-    const payload = {
+  const fetchItems = (selectedFilter)=>{
+    const payload = { 
       productFilters: {
-        sizes: selectedFilters.size,
-        colors: selectedFilters.color,
+        sizes: selectedFilter?.size,
+        colors: selectedFilter?.color,
         fk_category_id: categoryId,
-        gender: selectedFilters.gender,
-        priceStart: selectedFilters.price[0],
-        priceEnd: selectedFilters.price[1],
+        gender: selectedFilter?.gender,
+        priceStart: selectedFilter?.price[0],
+        priceEnd: selectedFilter?.price[1],
       },
       defaultFlag: 1,
       page,
       userId: user?.id,
     };
     dispatch(findItemsByCatagoryId(payload));
-  }, [dispatch, categoryId, selectedFilters, user?.id]);
+  }
 
   useEffect(() => {
-    fetchItems();
+    fetchItems(currentFilterData);
     dispatch(getSizeFilterByCatagory(categoryId));
     dispatch(getAllColors());
-  }, [ dispatch, categoryId,page]);
+  }, [categoryId,page]);
 
   const onClearFilters = () => {
     const defaultFilters = {
@@ -61,12 +67,15 @@ function ItemsPage() {
       price: [0, 1000000],
     };
     setSelectedFilters(defaultFilters);
+    setCurrentFilterData(defaultFilters)
 
     const payload = {
       productFilters: {
         fk_category_id: categoryId,
-        priceStart: defaultFilters.price[0],
-        priceEnd: defaultFilters.price[1],
+        priceStart: 0,
+        priceEnd: 1000000,
+        sizes:[],
+        colors:[]
       },
       defaultFlag: 1,
       page,
@@ -77,9 +86,8 @@ function ItemsPage() {
   };
 
   const onApplyFilters = (filters) => {
-    setSelectedFilters(filters);
-    fetchItems();
-    setShowFilters(false); // Close filter modal after applying filters
+    setCurrentFilterData(filters)
+    fetchItems(filters);
   };
 
   const containerStyle = {

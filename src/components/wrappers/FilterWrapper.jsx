@@ -21,7 +21,6 @@ const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   maxWidth: theme.typography.pxToRem(350),
   minHeight: "90vh",
   maxHeight: "90vh",
-  border: `solid ${theme.typography.pxToRem(2)} red`,
   overflow: "auto",
   padding: theme.spacing(2),
   border: `solid ${theme.typography.pxToRem(2)} blue`,
@@ -80,8 +79,9 @@ const FilterSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
-function FilterWrapper({ onApplyFilters,onClearFilters,selectedFilters, setSelectedFilters }) {
+function FilterWrapper({onApplyFilters,onClearFilters,selectedFilters, setSelectedFilters}) {
   const theme = useTheme();
+
 
 
 
@@ -102,6 +102,7 @@ function FilterWrapper({ onApplyFilters,onClearFilters,selectedFilters, setSelec
   };
 
   const handlePriceChange = (_, newValue) => {
+    console.log("handlePriceChange",_);
     setSelectedFilters((prev) => ({ ...prev, price: newValue }));
   };
 
@@ -181,7 +182,7 @@ function FilterWrapper({ onApplyFilters,onClearFilters,selectedFilters, setSelec
             max={1000000}
             sx={{
               color: theme.palette.ascentColor.main,
-              maxWidth: "92%",
+              maxWidth: "90%",
             }}
           />
           <Typography>
