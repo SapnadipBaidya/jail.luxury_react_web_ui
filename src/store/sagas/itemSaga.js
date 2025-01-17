@@ -6,8 +6,8 @@ import {  makePostAPIcall } from "../../utils/API_vendor";
 function* handleFindAllProductsByCatagoryId() {
   try {
    
-    const resPayload = {categoryId:yield select((state=>state?.itemReducer?.payload))}
-    const response = yield call(makePostAPIcall,"http://localhost:8080/api/products/findAllProductsByCatagoryId",resPayload);
+    const resPayload = yield select((state=>state?.itemReducer?.payload))
+    const response = yield call(makePostAPIcall,"http://localhost:8080/api/products/findAllProductsByCatagoryId",{payloadObj:resPayload});
     console.log("response",response)
     yield put({type:"FETCH_ITEMS_BY_CATEGORY_SUCCESS",payload:response?.data?.data});
   } catch (error) {

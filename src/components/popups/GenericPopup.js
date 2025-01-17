@@ -52,7 +52,7 @@ export default function GenericPopup({ popupName, content }) {
             {
               name: 'offset',
               options: {
-                offset: [0, 10],
+                offset: [20, 100],
               },
             },
           ]}
@@ -90,7 +90,7 @@ const PopupBody = styled('div')(
   font-family: ${theme.typography.fontFamily};
   font-weight: 500;
   font-size: 0.875rem;
-  z-index: 9999;
+  z-index: 99999;
   overflow: visible;
 `,
 );
