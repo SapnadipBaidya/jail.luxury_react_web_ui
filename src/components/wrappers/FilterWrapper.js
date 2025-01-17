@@ -4,19 +4,20 @@ import {
   Radio, Slider, Button, useMediaQuery, useTheme 
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import GenericBtns from "../buttons/GenericBtns";
 
 const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   minWidth: theme.typography.pxToRem(350), 
   maxWidth: theme.typography.pxToRem(350),
-  minHeight: "85vh", 
-  maxHeight: "85vh",
+  minHeight: "87vh", 
+  maxHeight: "87vh",
   border: `solid ${theme.typography.pxToRem(2)} red`,
-  overflowY: "auto", 
-  overflowX: "hidden",
+  overflow: "hidden", 
   padding: theme.spacing(2),
   border: `solid ${theme.typography.pxToRem(2)} blue`,
+  display: "flex",
+  flexDirection: "column",
 
-  // ✅ Tablet Responsiveness
   [theme.breakpoints.down("md")]: {
     minWidth: "99vw", 
     maxWidth: "99vw",
@@ -26,30 +27,34 @@ const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   },
 }));
 
-const FilterTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: "bold",
-  marginBottom: theme.spacing(1),
-  textTransform: "uppercase",
-  fontSize: theme.typography.pxToRem(16),
-  borderBottom: `${theme.typography.pxToRem(1)} solid black`,
-  display: "inline-block",
+const FilterHeader = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  paddingBottom: theme.spacing(2),
+  borderBottom: `solid ${theme.typography.pxToRem(1)} ${theme.palette.secondary.main}`,
 }));
 
-const ColorBox = styled(Box)({
-  display: "flex",
-  flexWrap: "wrap",
-  gap: "6px",
-  marginTop: "8px",
-});
+const FilterContent = styled(Box)(({ theme }) => ({
+  flexGrow: 1,
+  overflowY: "auto",
+  padding: theme.spacing(1),
 
-const ColorCircle = styled(Box)(({ selected, color, theme }) => ({
-  width: selected ? theme.typography.pxToRem(28) : theme.typography.pxToRem(20),
-  height: selected ? theme.typography.pxToRem(28) : theme.typography.pxToRem(20),
-  borderRadius: "50%",
-  backgroundColor: color,
-  border: `2px solid ${selected ? "black" : "#ccc"}`,
-  cursor: "pointer",
-  transition: "0.2s ease-in-out",
+  "&::-webkit-scrollbar": { width: theme.typography.pxToRem(6) },
+  "&::-webkit-scrollbar-track": { background: "transparent" },
+  "&::-webkit-scrollbar-thumb": { background: "rgba(0, 0, 0, 0.3)", borderRadius: theme.typography.pxToRem(10) },
+  "&::-webkit-scrollbar-thumb:hover": { background: "rgba(0, 0, 0, 0.5)" },
+}));
+
+const FilterFooter = styled(Box)(({ theme }) => ({
+  paddingTop: theme.spacing(2),
+  borderTop: `solid ${theme.typography.pxToRem(1)} ${theme.palette.secondary.main}`,
+}));
+
+const FilterTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  fontSize: theme.typography.pxToRem(16),
 }));
 
 const FilterSection = styled(Box)(({ theme }) => ({
@@ -59,7 +64,6 @@ const FilterSection = styled(Box)(({ theme }) => ({
 
 function FilterWrapper({ onApplyFilters, onClearFilters }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [selectedFilters, setSelectedFilters] = useState({
     gender: "",
@@ -85,97 +89,88 @@ function FilterWrapper({ onApplyFilters, onClearFilters }) {
     }));
   };
 
-  const handleColorSelection = (color) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      color: prev.color.includes(color) ? prev.color.filter((c) => c !== color) : [...prev.color, color],
-    }));
-  };
-
   const handlePriceChange = (_, newValue) => {
     setSelectedFilters((prev) => ({ ...prev, price: newValue }));
   };
 
   return (
     <FilterWrapperComponent>
-      <Typography variant="h6" fontWeight="bold" mb={2}>
-        Filters <Button size="small" onClick={onClearFilters}>Clear Filters</Button>
-      </Typography>
+      
+      {/* ✅ Fixed Header */}
+      <FilterHeader>
+        <FilterTitle>Filters</FilterTitle>
+        <GenericBtns type="secondary" btnText={"Clear Filters"} executableFunction={onClearFilters} minWidth="5vw" />
+      </FilterHeader>
 
-      {/* Gender Filter (Radio Buttons) */}
-      <FilterSection>
-        <FilterTitle>Gender</FilterTitle>
-        <RadioGroup
-          value={selectedFilters.gender}
-          onChange={(e) => handleRadioChange("gender", e.target.value)}
-        >
-          {["Male", "Female"].map((gender) => (
-            <FormControlLabel key={gender} value={gender} control={<Radio />} label={gender} />
-          ))}
-        </RadioGroup>
-      </FilterSection>
-
-      {/* Size Filter (Checkbox - Multiple Selections) */}
-      <FilterSection>
-        <FilterTitle>Size</FilterTitle>
-        {["S", "M", "L", "XL"].map((size) => (
-          <FormControlLabel
-            key={size}
-            control={
-              <Checkbox
-                checked={selectedFilters.size.includes(size)}
-                onChange={() => handleCheckboxChange("size", size)}
+      {/* ✅ Scrollable Filters Section */}
+      <FilterContent>
+        {/* Gender Filter (Radio Buttons) */}
+        <FilterSection>
+          <FilterTitle>Gender</FilterTitle>
+          <RadioGroup
+            value={selectedFilters.gender}
+            onChange={(e) => handleRadioChange("gender", e.target.value)}
+          >
+            {["Male", "Female"].map((gender) => (
+              <FormControlLabel 
+                key={gender} 
+                value={gender} 
+                control={<Radio sx={{
+                  color: theme.palette.ascentColor.main,
+                  '&.Mui-checked': { color: theme.palette.ascentColor.main }
+                }} />} 
+                label={gender} 
               />
-            }
-            label={size}
-          />
-        ))}
-      </FilterSection>
+            ))}
+          </RadioGroup>
+        </FilterSection>
 
-      {/* Color Filter */}
-      <FilterSection>
-        <FilterTitle>Color</FilterTitle>
-        <ColorBox>
-          {["#000", "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FFA500", "#800080", "#FFC0CB"].map((color) => (
-            <ColorCircle
-              key={color}
-              color={color}
-              selected={selectedFilters.color.includes(color)}
-              onClick={() => handleColorSelection(color)}
+        {/* Size Filter (Checkbox - Multiple Selections) */}
+        <FilterSection>
+          <FilterTitle>Size</FilterTitle>
+          {["S", "M", "L", "XL"].map((size) => (
+            <FormControlLabel
+              key={size}
+              control={
+                <Checkbox
+                  checked={selectedFilters.size.includes(size)}
+                  onChange={() => handleCheckboxChange("size", size)}
+                  sx={{
+                    color: theme.palette.ascentColor.main,
+                    '&.Mui-checked': { color: theme.palette.ascentColor.main }
+                  }}
+                />
+              }
+              label={size}
             />
           ))}
-        </ColorBox>
-      </FilterSection>
+        </FilterSection>
 
-      {/* Price Filter */}
-      <FilterSection>
-        <FilterTitle>Price</FilterTitle>
-        <Slider
-          value={selectedFilters.price}
-          onChange={handlePriceChange}
-          valueLabelDisplay="auto"
-          min={0}
-          max={1000000}
-        />
-        <Typography>₹{selectedFilters.price[0]} - ₹{selectedFilters.price[1]}</Typography>
-      </FilterSection>
+        {/* Price Filter */}
+        <FilterSection>
+          <FilterTitle>Price</FilterTitle>
+          <Slider
+            value={selectedFilters.price}
+            onChange={handlePriceChange}
+            valueLabelDisplay="auto"
+            min={0}
+            max={1000000}
+            sx={{
+              color: theme.palette.ascentColor.main,
+              maxWidth: "92%",
+            }}
+          />
+          <Typography>₹{selectedFilters.price[0]} - ₹{selectedFilters.price[1]}</Typography>
+        </FilterSection>
+      </FilterContent>
 
-      {/* Rating Filter (Radio Buttons) */}
-      <FilterSection>
-        <FilterTitle>Rating</FilterTitle>
-        <RadioGroup
-          value={selectedFilters.rating}
-          onChange={(e) => handleRadioChange("rating", e.target.value)}
-        >
-          {[4, 3, 2, 1].map((rating) => (
-            <FormControlLabel key={rating} value={rating} control={<Radio />} label={`${rating}★ and above`} />
-          ))}
-        </RadioGroup>
-      </FilterSection>
+      {/* ✅ Fixed Footer */}
+      <FilterFooter>
+        <Button variant="contained" fullWidth onClick={() => onApplyFilters(selectedFilters)}>
+          Apply Filters
+        </Button>
+      </FilterFooter>
 
-      <Button variant="contained" fullWidth onClick={() => onApplyFilters(selectedFilters)}>
-        Apply Filters
-      </Button>
     </FilterWrapperComponent>
   );
 }

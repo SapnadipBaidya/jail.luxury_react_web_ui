@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Menu, MenuItem, styled } from '@mui/material';
+import { Box, Menu, MenuItem, styled, useTheme, useMediaQuery } from '@mui/material';
 import GenericBtns from '../buttons/GenericBtns';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
@@ -11,11 +11,14 @@ const SortFilterWrapper = styled('div')(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  border:"solid 2px green"
-
+  border: "solid 2px green"
 }));
 
-function SortFilterComponent({setShowFilters,showFilters}) {
+function SortFilterComponent({ setShowFilters, showFilters }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));  // ✅ Detects mobile view
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));  // ✅ Detects tablet view
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [sortBy, setSortBy] = useState("Sort By");
   const open = Boolean(anchorEl);
@@ -31,43 +34,57 @@ function SortFilterComponent({setShowFilters,showFilters}) {
     setAnchorEl(null);
   };
 
-
-  const handleFilterClick =()=>{
-    setShowFilters(!showFilters)
-  }
+  const handleFilterClick = () => {
+    setShowFilters(!showFilters);
+  };
 
   return (
     <SortFilterWrapper>
-     
-        <GenericBtns type="primary" btnText={<FilterListIcon/>} executableFunction={handleFilterClick} minWidth="3vw" />
-        <GenericBtns type="secondary" btnText={sortBy} executableFunction={handleClick} minWidth="10vw" />
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={() => handleClose(null)}
-          PaperProps={{
-            sx: {
-              width: "10vw", // ✅ Set width explicitly
-            },
-          }}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center", // ✅ Aligns to the right of the button
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center", // ✅ Prevents the menu from shifting left
-          }}
-        >
-          <MenuItem onClick={() => handleClose("Sort By")}>
-            <em>None</em>
+      <GenericBtns type="primary" btnText={<FilterListIcon />} executableFunction={handleFilterClick} minWidth="3vw" />
+      <GenericBtns type="secondary" btnText={sortBy} executableFunction={handleClick} minWidth="10vw" />
+
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => handleClose(null)}
+        PaperProps={{
+          sx: {
+            width: isMobile ? "100vw" : isTablet ? "36.5vw" : "10vw",  // ✅ Responsive Width
+            padding: "1vh",
+          },
+        }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        {[
+          { label: "None", value: "Sort By" },
+          { label: "Price: Low to High", value: "Price: Low to High" },
+          { label: "Price: High to Low", value: "Price: High to Low" },
+          { label: "Newest Arrivals", value: "Newest Arrivals" },
+          { label: "Best Rated", value: "Best Rated" }
+        ].map((item) => (
+          <MenuItem
+            key={item.value}
+            onClick={() => handleClose(item.value)}
+            sx={{
+              fontSize: isMobile
+                ? theme.typography.pxToRem(12)
+                : isTablet
+                ? theme.typography.pxToRem(12)
+                : theme.typography.pxToRem(14),  // ✅ Adjust font size dynamically
+              padding: isMobile ? "0.5vh" : "1vh",  // ✅ Adjust padding dynamically
+            }}
+          >
+            {item.label}
           </MenuItem>
-          <MenuItem onClick={() => handleClose("Price: Low to High")}>Price: Low to High</MenuItem>
-          <MenuItem onClick={() => handleClose("Price: High to Low")}>Price: High to Low</MenuItem>
-          <MenuItem onClick={() => handleClose("Newest Arrivals")}>Newest Arrivals</MenuItem>
-          <MenuItem onClick={() => handleClose("Best Rated")}>Best Rated</MenuItem>
-        </Menu>
-     
+        ))}
+      </Menu>
     </SortFilterWrapper>
   );
 }

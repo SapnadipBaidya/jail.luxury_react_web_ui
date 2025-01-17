@@ -9,6 +9,9 @@ export const lightTheme = createTheme({
     secondary: {
       main: '#625F59',
     },
+    ascentColor:{
+      main:"#A020F0"
+    },
     background: {
       default: '#f3ece3',
       paper: '#ffffff',
@@ -24,6 +27,9 @@ export const darkTheme = createTheme({
     mode: 'dark',
     primary: {
       main: '#573C2C',
+    },
+    ascentColor:{
+      main:"#AA336A"
     },
     secondary: {
       main: '#CCB878',

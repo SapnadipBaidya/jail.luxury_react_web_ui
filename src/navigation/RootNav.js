@@ -27,6 +27,7 @@ import * as Pages from "../pages/index";
 import { useAuth } from "../contexts/AuthProvider";
 import { useDispatch } from "react-redux";
 import { fetchAllCategories } from "../store/actions/categoryActions";
+import Footer from "../pages/Footer";
 
 // Styled Components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -125,6 +126,7 @@ const RootNav = () => {
                   </Typography>
                 ))}
             </NavLinksContainer>
+            
           )}
 
           <Box display="flex" alignItems="center" gap={1}>
@@ -158,7 +160,10 @@ const RootNav = () => {
         </DrawerContainer>
       </Drawer>
 
-      <Routes>{renderRoutes(navigationConfig)}</Routes>
+      <Routes>{renderRoutes(navigationConfig)}
+     
+      </Routes>
+      <Footer/>
     </Router>
   );
 };

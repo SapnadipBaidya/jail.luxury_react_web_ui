@@ -77,14 +77,14 @@ const StyledButton = styled(Button)(({ theme, minwidth }) => ({
 
   // ✅ Tablet View Adjustments
   [theme.breakpoints.down("md")]: {
-    minWidth: "15vw", // ✅ Adjust width for tablets
+    minWidth: "35vw", // ✅ Adjust width for tablets
     fontSize: theme.typography.pxToRem(12),
     padding: theme.spacing(1, 2),
   },
 
   // ✅ Mobile View Adjustments
   [theme.breakpoints.down("sm")]: {
-    minWidth: "10vw", // ✅ Full width for mobile
+    minWidth: "30vw", // ✅ Full width for mobile
     fontSize: theme.typography.pxToRem(12),
     padding: theme.spacing(1),
   },

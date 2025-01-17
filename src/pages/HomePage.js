@@ -28,7 +28,6 @@ function HomePage() {
         out of the simplicity of directions—“Jail Road, Jail Road.” Today, it
         stands as a symbol of our journey, from a small shop in Bihar to a
         luxury brand that resonates with customers around the world.</>}/>
-      <Footer/>
     </HomeContainer>
   );
 }

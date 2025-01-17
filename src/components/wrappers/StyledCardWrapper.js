@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, Typography, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 // ✅ Fully Responsive Styled Card
@@ -94,18 +94,20 @@ const ButtonComp = styled(Button)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(1),
   width: '100%',
-  padding: theme.typography.pxToRem(8), // Converted to pxToRem
   fontSize: theme.typography.pxToRem(16), // Default font size
+  maxWidth: theme.typography.pxToRem(10),
+  minHeight: theme.typography.pxToRem(60),
+  maxHeight: theme.typography.pxToRem(80),
+  
 
   [theme.breakpoints.down('lg')]: {
     fontSize: theme.typography.pxToRem(14),
-    minWidth: theme.typography.pxToRem(80),
-  },
+    minWidth: theme.typography.pxToRem(30),
+    maxWidth: theme.typography.pxToRem(40),
+    minHeight: theme.typography.pxToRem(30),
+    maxHeight: theme.typography.pxToRem(40),
+    padding: theme.typography.pxToRem(2),
 
-  [theme.breakpoints.down('sm')]: {
-    fontSize: theme.typography.pxToRem(12),
-    padding: theme.typography.pxToRem(6),
-    minWidth: theme.typography.pxToRem(70),
   },
 }));
 
@@ -158,10 +160,10 @@ function StyledCardWrapper() {
           </PriceTypography>
         </TypographyContainer>
         <ButtonContainer>
-          <ButtonComp variant="outlined" fullWidth color="primary">
-            <AddShoppingCartIcon />
+          <ButtonComp variant="outlined"  color="primary">
+            <LocalMallOutlinedIcon />
           </ButtonComp>
-          <ButtonComp variant="outlined" color="error" fullWidth>
+          <ButtonComp variant="outlined" color="error" >
             <DeleteForeverIcon />
           </ButtonComp>
         </ButtonContainer>
