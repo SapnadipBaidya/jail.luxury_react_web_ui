@@ -3,28 +3,42 @@ name: JAIL LUXURY UAT Deployment
 on:
   push:
     branches:
-    - uat
+      - uat
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-     - name: Checkout Source
-       uses: actions/checkout@v1
-     - name: Login to Docker Hub 
-       run:  docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-     - name: Build Docker Image
-       run:  docker build -t  sapnadipbaidya/jail_luxury_react_ui .
-     - name: Publish Image to docker hub
-       run:  docker push sapnadipbaidya/jail_luxury_react_ui:latest      
-  
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Set Timestamp Variable
+        id: vars
+        run: echo "TIMESTAMP=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
+      - name: Build Docker Image
+        run: docker build -t sapnadipbaidya/jail_luxury_react_ui:${{ env.TIMESTAMP }} -t sapnadipbaidya/jail_luxury_react_ui:latest .
+
+      - name: Publish Image to Docker Hub
+        run: |
+          docker push sapnadipbaidya/jail_luxury_react_ui:${{ env.TIMESTAMP }}
+          docker push sapnadipbaidya/jail_luxury_react_ui:latest
+
   deploy:
     needs: build
-    runs-on: aws-ec2
+    runs-on: jail_luxury_react_runner
     steps:
-      - name: Pull image from docker hub
+      - name: Pull Image from Docker Hub
         run: docker pull sapnadipbaidya/jail_luxury_react_ui:latest
-      - name: Delete Old Container
-        run:  docker rm -f reactContainer  
-      - name: Run Docker container
-        run:  docker rm -d 3000:80 --name reactContainer sapnadipbaidya/jail_luxury_react_ui
+
+      - name: Delete Old Container (If Exists)
+        run: docker rm -f reactContainer || true
+
+      - name: Run Docker Container
+        run: |
+          docker run -d -p 3000:80 --name reactContainer \
+          --restart unless-stopped \
+          sapnadipbaidya/jail_luxury_react_ui:latest
