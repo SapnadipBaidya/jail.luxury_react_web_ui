@@ -3,7 +3,7 @@ name: JAIL LUXURY UAT Deployment
 on:
   push:
     branches:
-    - main
+    - uat
 
 jobs:
   build-and-deploy:
