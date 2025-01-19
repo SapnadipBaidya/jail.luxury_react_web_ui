@@ -55,6 +55,7 @@ const StyledButton = styled(Button)(({ theme, minwidth }) => ({
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
   transition: 'all 0.3s ease',
+  padding:"1vh",
 
   '&:hover': {
     boxShadow: theme.shadows[4],
@@ -80,6 +81,7 @@ const StyledButton = styled(Button)(({ theme, minwidth }) => ({
     minWidth: "35vw", // ✅ Adjust width for tablets
     fontSize: theme.typography.pxToRem(12),
     padding: theme.spacing(1, 2),
+    maxHeight:theme.typography.pxToRem(40)
   },
 
   // ✅ Mobile View Adjustments
@@ -87,5 +89,6 @@ const StyledButton = styled(Button)(({ theme, minwidth }) => ({
     minWidth: "30vw", // ✅ Full width for mobile
     fontSize: theme.typography.pxToRem(12),
     padding: theme.spacing(1),
+    maxHeight:theme.typography.pxToRem(30)
   },
 }));
