@@ -35,7 +35,7 @@ function ItemsPage() {
        }
         
         {/* Show GridWrapper only if it's Desktop or Filters are hidden */}
-         <GridWrapper itemsArr={itemsArr} setShowFilters={setShowFilters} showFilters={showFilters} />
+         <GridWrapper itemsArr={itemsArr} type="Product" setShowFilters={setShowFilters} showFilters={showFilters} />
       </div>
     </div>
   );

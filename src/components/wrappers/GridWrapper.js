@@ -25,21 +25,21 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
       },
 }));
 
-function GridWrapper({ itemsArr, setShowFilters, showFilters }) {
+function GridWrapper({ itemsArr,type, setShowFilters, showFilters }) {
   const theme = useTheme();
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md")); // ✅ Detects mobile/tablet view
 
   return (
     <div>
       {/* ✅ Desktop: SortFilterComponent at the top, GridWrapper always visible */}
-      {!isMobileOrTablet && (
+      {(!isMobileOrTablet) && (
         <>
-          <SortFilterComponent setShowFilters={setShowFilters} showFilters={showFilters} />
+        { type=="Product"  &&  <SortFilterComponent setShowFilters={setShowFilters} showFilters={showFilters} />}
           <GridWrapperComponent>
             <Grid container spacing={3} justifyContent="center" alignItems="center">
               {itemsArr?.data?.map((item, index) => (
                 <Grid item xs={6} sm={6} md={4} lg={4} xl={3} key={index}>
-                  <StyledCardWrapper type="Product" item={item}/>
+                  <StyledCardWrapper type={type} item={item}/>
                 </Grid>
               ))}
             </Grid>
@@ -50,7 +50,7 @@ function GridWrapper({ itemsArr, setShowFilters, showFilters }) {
       {/* ✅ Mobile/Tablet: Show FilterWrapper or GridWrapper based on `showFilters` */}
       {isMobileOrTablet && (
         <>
-           {showFilters && <div>
+           {(type=="Product"  && showFilters) && <div>
               <FilterWrapper />
             </div>}
 
@@ -59,7 +59,7 @@ function GridWrapper({ itemsArr, setShowFilters, showFilters }) {
               <Grid container spacing={3} justifyContent="center" alignItems="center">
                 {itemsArr?.data?.map((item, index) => (
                   <Grid item xs={6} sm={6} md={4} lg={4} xl={3} key={index}>
-                    <StyledCardWrapper type="Product" item={item}/>
+                    <StyledCardWrapper type={type} item={item}/>
                   </Grid>
                 ))}
               </Grid>
@@ -67,7 +67,7 @@ function GridWrapper({ itemsArr, setShowFilters, showFilters }) {
        
 
           {/* ✅ SortFilterComponent is always visible at the bottom in mobile/tablet */}
-          <SortFilterComponent setShowFilters={setShowFilters} showFilters={showFilters} />
+{type=="Product"  &&  <SortFilterComponent setShowFilters={setShowFilters} showFilters={showFilters} />}
         </>
       )}
     </div>
