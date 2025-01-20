@@ -1,10 +1,10 @@
-import { Button, Card, CardContent, Typography, Box } from "@mui/material";
+import { Button, Card, CardContent, Typography, Box, Fade, Slide } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React from "react";
-import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import WishListButton from "../buttons/wishListBtn";
+import DeleteBtn from "../buttons/deleteBtn.js";
+import CartBtn from "../buttons/cartBtn.js";
 
 // ✅ Fully Responsive Styled Card
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -89,28 +89,6 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-// ✅ Button Styles
-const ButtonComp = styled(Button)(({ theme }) => ({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: theme.spacing(1),
-  width: "100%",
-  fontSize: theme.typography.pxToRem(16), // Default font size
-  maxWidth: theme.typography.pxToRem(10),
-  minHeight: theme.typography.pxToRem(60),
-  maxHeight: theme.typography.pxToRem(80),
-
-  [theme.breakpoints.down("lg")]: {
-    fontSize: theme.typography.pxToRem(14),
-    minWidth: theme.typography.pxToRem(30),
-    maxWidth: theme.typography.pxToRem(40),
-    minHeight: theme.typography.pxToRem(30),
-    maxHeight: theme.typography.pxToRem(40),
-    padding: theme.typography.pxToRem(2),
-  },
-}));
-
 // ✅ Product Name & Price Container
 const TypographyContainer = styled(Box)({
   display: "flex",
@@ -121,7 +99,7 @@ const TypographyContainer = styled(Box)({
 
 // ✅ Product Name
 const StyledTypography = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.pxToRem(18), // Default size
+  fontSize: theme.typography.pxToRem(18),
 
   [theme.breakpoints.down("lg")]: {
     fontSize: theme.typography.pxToRem(16),
@@ -146,42 +124,56 @@ const PriceTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-function StyledCardWrapper({ type ,item}) {
-  const mainImgUrl = item?.gallery_details?.gallary?.images[0]
-  console.log("item",  mainImgUrl)
+function StyledCardWrapper({ type, item }) {
+  const mainImgUrl = item?.gallery_details?.gallery?.images[0];
   const navigate = useNavigate(); // For redirection
+
+  // ✅ Add Animation Effects
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    setShow(true); // ✅ Component Appears with Fade-in Effect
+    return () => setShow(false); // ✅ Component Disappears with Slide-out Effect
+  }, []);
+
   return (
-    <StyledCard >
-      <ProductImage src={mainImgUrl} alt={"Product Image"} onClick={(e)=>{
-      e.preventDefault();
-      e.stopPropagation()
-      navigate("/Product")
-    }} />
-      <CardContent style={{ textAlign: "center", width: "100%" }}>
-        <TypographyContainer>
-          <StyledTypography variant="body1" color="primary">
-            {item?.product_details?.product_name}            
-          </StyledTypography>
-          <PriceTypography variant="subtitle1">
-            {item?.product_details?.product_price_inr}
-          </PriceTypography>
-        </TypographyContainer>
-        <ButtonContainer>
-          {type == "Product" ? (
-              <WishListButton />
-          ) : (
-            <>
-              <ButtonComp variant="outlined" color="primary">
-                <LocalMallOutlinedIcon />
-              </ButtonComp>
-              <ButtonComp variant="outlined" color="error">
-                <DeleteForeverIcon />
-              </ButtonComp>
-            </>
-          )}
-        </ButtonContainer>
-      </CardContent>
-    </StyledCard>
+    <Slide direction="up" in={show} mountOnEnter unmountOnExit>
+      <StyledCard>
+        <Fade in={show} timeout={500}>
+          <ProductImage
+            src={mainImgUrl}
+            alt={"Product Image"}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              navigate("/Product");
+            }}
+          />
+        </Fade>
+
+        <CardContent style={{ textAlign: "center", width: "100%" }}>
+          <TypographyContainer>
+            <StyledTypography variant="body1" color="primary">
+              {item?.product_details?.product_name}
+            </StyledTypography>
+            <PriceTypography variant="subtitle1">
+              ₹{item?.product_details?.product_price_inr}
+            </PriceTypography>
+          </TypographyContainer>
+
+          <ButtonContainer>
+            {type === "Product" ? (
+              <WishListButton item={item} />
+            ) : (
+              <>
+                <CartBtn />
+                <DeleteBtn item={item} />
+              </>
+            )}
+          </ButtonContainer>
+        </CardContent>
+      </StyledCard>
+    </Slide>
   );
 }
 

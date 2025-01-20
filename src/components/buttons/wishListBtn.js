@@ -6,6 +6,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import GenericBtns from "./GenericBtns";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthProvider";
+import { useDispatch } from "react-redux";
+import { addEditUserWishlist } from "../../store/actions/wishlistActions";
 
 // ✅ Styled Animated Icon Wrapper
 const AnimatedIcon = styled(Box)(({ theme }) => ({
@@ -43,18 +45,20 @@ const AnimatedIcon = styled(Box)(({ theme }) => ({
 }));
 
 // ✅ WishList Button Component
-function WishListButton() {
-  const [isChecked, setIsChecked] = useState(false);
+function WishListButton({item}) {
+  const [isChecked, setIsChecked] = useState(item.product_details.is_wishlisted);
   const [openDialog, setOpenDialog] = useState(false); // Control login dialog
   const { user } = useAuth(); // Using Auth Context
   const navigate = useNavigate(); // For redirection
-
+  const dispatch = useDispatch();
+console.log("item",item)
   // ✅ Wishlist Toggle with Authentication Check
   const handleWishlistToggle = (e) => {
     e.preventDefault();
 
     if (user) {
       setIsChecked((prev) => !prev);
+      dispatch(addEditUserWishlist({"userId":user?.id,"productsDetailsId": item?.product_details?.products_details_id,"product_id":item?.product_details?.product_id}))
     } else {
       // Open login confirmation dialog
       setOpenDialog(true);
