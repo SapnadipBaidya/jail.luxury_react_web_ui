@@ -1,9 +1,9 @@
-export const findItemsByCatagoryId = (categoryId) => {
-  console.log("findItemsByCatagoryId",categoryId)
+export const findItemsByCatagoryId = (data) => {
+  console.log("findItemsByCatagoryId",data)
     return (dispatch) => {
       dispatch({
         type: "FETCH_ITEMS_BY_CATEGORY_REQUEST",
-        payload: categoryId,
+        payload: data,
       });
     };
   };

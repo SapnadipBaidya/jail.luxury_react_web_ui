@@ -15,7 +15,14 @@ function WishListPage() {
  
   return (
     <div>
-      {user?.id?<><GridWrapper type="Wishlist" itemsArr={itemsArr} /></>:<>Please Login</>}
+      {user?.id?<>
+      
+      
+    {itemsArr?.loading == false?  <GridWrapper type="Wishlist" itemsArr={itemsArr} />:"loading"}
+      
+      
+      
+      </>:<>Please Login</>}
       
     </div>
   );
