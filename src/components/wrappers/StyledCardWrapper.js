@@ -147,7 +147,7 @@ const PriceTypography = styled(Typography)(({ theme }) => ({
 }));
 
 function StyledCardWrapper({ type ,item}) {
-  const mainImgUrl = item?.gallery_details?.image_url?.images[0]
+  const mainImgUrl = item?.gallery_details?.gallary?.images[0]
   console.log("item",  mainImgUrl)
   const navigate = useNavigate(); // For redirection
   return (
