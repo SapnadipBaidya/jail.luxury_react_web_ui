@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Button, useMediaQuery, useTheme, Slide } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { findItemsByCatagoryId } from "../store/actions/itemActions";
+import { findItemsByCatagoryId, getSizeFilterByCatagory } from "../store/actions/itemActions";
 import GridWrapper from "../components/wrappers/GridWrapper";
 import FilterWrapper from "../components/wrappers/FilterWrapper";
 import { useAuth } from "../contexts/AuthProvider";
@@ -27,6 +27,7 @@ function ItemsPage() {
       userId: user?.id,
     };
     dispatch(findItemsByCatagoryId(payload));
+    dispatch(getSizeFilterByCatagory(categoryId))
   }, [page,dispatch, categoryId]);
 
   return (

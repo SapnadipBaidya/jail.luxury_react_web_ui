@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { 
-  Box, Typography, FormControlLabel, Checkbox, RadioGroup, 
+  Box, Typography, FormControlLabel, RadioGroup, 
   Radio, Slider, Button, useMediaQuery, useTheme 
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import GenericBtns from "../buttons/GenericBtns";
+import FilterSizeComponent from "../generics/filterSizeComponent";
+import { useSelector } from "react-redux";
 
 const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   minWidth: theme.typography.pxToRem(350), 
@@ -92,7 +94,8 @@ function FilterWrapper({ onApplyFilters, onClearFilters }) {
   const handlePriceChange = (_, newValue) => {
     setSelectedFilters((prev) => ({ ...prev, price: newValue }));
   };
-
+// data from reducers
+   const {sizeData,sizeLoading} = useSelector((state) => state?.itemReducer);
   return (
     <FilterWrapperComponent>
       
@@ -127,23 +130,7 @@ function FilterWrapper({ onApplyFilters, onClearFilters }) {
 
         {/* Size Filter (Checkbox - Multiple Selections) */}
         <FilterSection>
-          <FilterTitle>Size</FilterTitle>
-          {["S", "M", "L", "XL"].map((size) => (
-            <FormControlLabel
-              key={size}
-              control={
-                <Checkbox
-                  checked={selectedFilters.size.includes(size)}
-                  onChange={() => handleCheckboxChange("size", size)}
-                  sx={{
-                    color: theme.palette.ascentColor.main,
-                    '&.Mui-checked': { color: theme.palette.ascentColor.main }
-                  }}
-                />
-              }
-              label={size}
-            />
-          ))}
+          <FilterSizeComponent sizeArr={sizeData} sizeLoading={sizeLoading} selectedFilters={selectedFilters} handleCheckboxChange={handleCheckboxChange}/>
         </FilterSection>
 
         {/* Price Filter */}

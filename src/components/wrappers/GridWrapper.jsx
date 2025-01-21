@@ -104,7 +104,7 @@ function GridWrapper({
         </>
       )}
       {/* ✅ Fixed Pagination Component at Bottom */}
-      <PaginationComponent page={page} setPage={setPage} />
+      {type=="Product" && <PaginationComponent page={page} setPage={setPage} />}
     </div>
   );
 }
