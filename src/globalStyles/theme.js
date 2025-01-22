@@ -7,7 +7,7 @@ export const lightTheme = createTheme({
       main: '#573C2C',
     },
     secondary: {
-      main: '#625F59',
+      main: '#ded4c0',
     },
     ascentColor:{
       main:"#A020F0"

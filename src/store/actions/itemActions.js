@@ -36,3 +36,23 @@ export const getSizeFilterByCatagoryFailed = (error) => ({
   type: "FETCH_SIZE_FILTER_FAILED",
   payload: error,
 });
+
+
+export const getAllColors = () => {
+  console.log(" getAllColors req");
+  return (dispatch) => {
+    dispatch({
+      type: "FETCH_COLOR_FILTER_REQUEST"
+    });
+  };
+};
+
+export const getAllColorsSuccess = (data) => ({
+  type: "FETCH_COLOR_FILTER_SUCCESS",
+  payload: data,
+});
+
+export const getAllColorsFailed = (error) => ({
+  type: "FETCH_COLOR_FILTER_FAILED",
+  payload: error,
+});

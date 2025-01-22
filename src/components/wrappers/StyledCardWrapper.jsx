@@ -8,7 +8,7 @@ import CartBtn from "../buttons/cartBtn.jsx";
 
 // ✅ Fully Responsive Styled Card
 const StyledCard = styled(Card)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.secondary.main,
   borderRadius: theme.shape.borderRadius,
   display: "flex",
   flexDirection: "column",
@@ -20,12 +20,11 @@ const StyledCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.typography.pxToRem(10),
   transition: "transform 0.3s ease",
   border: "solid 2px red",
-
   // ✅ Desktop/iPad Pro
-  minWidth: theme.typography.pxToRem(300),
-  maxWidth: theme.typography.pxToRem(300),
-  minHeight: theme.typography.pxToRem(400),
-  maxHeight: theme.typography.pxToRem(400),
+  minWidth: theme.typography.pxToRem(200),
+  maxWidth: theme.typography.pxToRem(200),
+  minHeight: theme.typography.pxToRem(330),
+  maxHeight: theme.typography.pxToRem(340),
 
   // ✅ Tablet View
   [theme.breakpoints.down("lg")]: {
@@ -41,7 +40,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
     minWidth: theme.typography.pxToRem(150),
     maxWidth: theme.typography.pxToRem(170),
     minHeight: theme.typography.pxToRem(200),
-    maxHeight: theme.typography.pxToRem(250),
+    maxHeight: theme.typography.pxToRem(280),
     padding: theme.spacing(0.5),
   },
 
@@ -52,19 +51,21 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
 // ✅ Product Image Styles
 const ProductImage = styled("img")(({ theme }) => ({
-  minWidth: theme.typography.pxToRem(250),
-  maxWidth: theme.typography.pxToRem(250),
-  minHeight: theme.typography.pxToRem(240),
+  minWidth: theme.typography.pxToRem(100),
+  maxWidth: theme.typography.pxToRem(170),
+  minHeight: theme.typography.pxToRem(160),
   maxHeight: theme.typography.pxToRem(240),
   objectFit: "cover",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.palette.grey[300],
+     margin:"1vh",
 
   [theme.breakpoints.down("lg")]: {
     minWidth: theme.typography.pxToRem(180),
-    maxWidth: theme.typography.pxToRem(180),
-    minHeight: theme.typography.pxToRem(180),
-    maxHeight: theme.typography.pxToRem(180),
+    maxWidth: theme.typography.pxToRem(200),
+    minHeight: theme.typography.pxToRem(190),
+    maxHeight: theme.typography.pxToRem(200),
+ 
   },
 
   [theme.breakpoints.down("sm")]: {

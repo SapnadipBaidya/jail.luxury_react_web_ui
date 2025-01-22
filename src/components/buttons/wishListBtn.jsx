@@ -83,7 +83,7 @@ console.log("item",item)
           <AnimatedIcon className={isChecked ? "checked" : ""}>
             <FavoriteBorderIcon className="inactive" fontSize="medium" />
             <FavoriteIcon className="active" fontSize="medium" />
-            <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>WISHLIST</Typography>
+            <Typography sx={{ fontSize: "14px", fontWeight: "bold" ,color:"black"}}>WISHLIST</Typography>
           </AnimatedIcon>
         }
         executableFunction={handleWishlistToggle}

@@ -4,7 +4,7 @@ import GenericBtns from '../buttons/GenericBtns';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 const SortFilterWrapper = styled('div')(({ theme }) => ({
-  minWidth: "70vw",
+  minWidth: "100%",
   height: "7vh",
   border: "solid 2px red",
   padding: "1rem",

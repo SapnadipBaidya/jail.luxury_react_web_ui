@@ -11,6 +11,8 @@ const FilterTitle = styled(Typography)(({ theme }) => ({
 const CheckboxWrapper =   styled(Checkbox)(({ theme }) => ({
     color: theme.palette.ascentColor.main,
     "&.Mui-checked": { color: theme.palette.ascentColor.main },
+    
+
   }));
 
   
@@ -21,10 +23,10 @@ function FilterSizeComponent({ sizeArr,sizeLoading ,selectedFilters,handleCheckb
       <FilterTitle>Size</FilterTitle>
       { !sizeLoading ? sizeArr?.map((size) => (
         <FormControlLabel
-          key={size?.pk_size_id}
+          key={"size"+size?.pk_size_id}
           control={
             <CheckboxWrapper
-              checked={selectedFilters.size.includes(size?.pk_size_id)}
+              checked={selectedFilters?.size?.includes(size?.pk_size_id)}
               onChange={() => handleCheckboxChange("size", size?.pk_size_id)}
             />
           }
