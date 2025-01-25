@@ -15,13 +15,6 @@ const CardContainer = styled("tr")(({ theme }) => ({
   marginBottom: "5vh",
 }));
 
-const ImagePlaceholder = styled(Box)({
-  width: "80px",
-  height: "80px",
-  borderRadius: "12px",
-  backgroundColor: "#ccc",
-  border: "1px solid black",
-});
 
 const SizeBox = styled(Box)({
   minWidth: "35px",
