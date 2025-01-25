@@ -1,5 +1,6 @@
-import { Card, Checkbox, Chip, FormControlLabel, styled, Typography } from '@mui/material'
+import { Checkbox, Chip, FormControlLabel, styled, Typography } from '@mui/material'
 import React from 'react'
+import TextAreaSkeleton from '../wrappers/textAreaSkeleton';
 
 
 
@@ -39,7 +40,7 @@ function FilterColorComponent({colorArr ,colorLoading ,selectedFilters, handleCh
                     />
                   }
                   label={<><Chip key={"hi"}  sx={{backgroundColor:`${color?.color_hex}`}}/> {color?.color_name}</>}
-                />):<>loading</>}
+                />):<><TextAreaSkeleton/></>}
        
            
 

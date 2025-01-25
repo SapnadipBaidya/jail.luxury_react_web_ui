@@ -1,5 +1,6 @@
 import { Checkbox, FormControlLabel, styled, Typography } from "@mui/material";
 import React from "react";
+import TextAreaSkeleton from "../wrappers/textAreaSkeleton";
 
 
 const FilterTitle = styled(Typography)(({ theme }) => ({
@@ -32,7 +33,7 @@ function FilterSizeComponent({ sizeArr,sizeLoading ,selectedFilters,handleCheckb
           }
           label={size?.size_name}
         />
-      )):<>loading</>}
+      )):<><TextAreaSkeleton/></>}
     </>
   );
 }

@@ -25,6 +25,9 @@ const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: theme.typography.pxToRem(200),
   minHeight: theme.typography.pxToRem(330),
   maxHeight: theme.typography.pxToRem(340),
+  "&:hover": {
+    transform: "scale(1.1)",
+  },
 
   // ✅ Tablet View
   [theme.breakpoints.down("lg")]: {
@@ -44,9 +47,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
     padding: theme.spacing(0.5),
   },
 
-  "&:hover": {
-    transform: "scale(1.05)",
-  },
+
 }));
 
 // ✅ Product Image Styles
@@ -125,7 +126,7 @@ const PriceTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-function StyledCardWrapper({ type, item }) {
+const StyledCardWrapper = React.memo(({ type, item }) => {
   const mainImgUrl = item?.gallery_details?.gallery?.images[0];
   const navigate = useNavigate(); // For redirection
 
@@ -177,5 +178,6 @@ function StyledCardWrapper({ type, item }) {
     </Slide>
   );
 }
+)
 
 export default StyledCardWrapper;

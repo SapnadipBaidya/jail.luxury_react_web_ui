@@ -21,7 +21,7 @@ function ItemsPage() {
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
 
 
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
   const [page, setPage] = useState(1);
   const [currentFilterData, setCurrentFilterData] = useState({
     gender: "",
@@ -108,7 +108,6 @@ function ItemsPage() {
       )}
 
       {/* 🔄 Main Content Container */}
-      {!itemsArr?.loading ? (
         <div
           style={{
             display: "flex",
@@ -175,9 +174,7 @@ function ItemsPage() {
             </div>
           )}
         </div>
-      ) : (
-        "loading"
-      )}
+   
 
       {/* 🔹 Mobile/Tablet: SortFilterComponent is Fixed at Bottom */}
       {isMobileOrTablet && (
