@@ -12,6 +12,7 @@ import {
   watcherForUserWishlist,
 } from "./wishlistSaga";
 import { watchForCartFetchByUser } from "./cartSaga";
+import { watchForFetchProductByPid } from "./productSaga";
 
 // Combine all sagas
 export default function* rootSaga() {
@@ -25,6 +26,7 @@ export default function* rootSaga() {
     watcherForAddEditUserWishlist(),
     watchFetchAllSizesByCatagoryId(),
     watchFetchAllColors(),
-    watchForCartFetchByUser()
+    watchForCartFetchByUser(),
+    watchForFetchProductByPid()
   ]);
 }

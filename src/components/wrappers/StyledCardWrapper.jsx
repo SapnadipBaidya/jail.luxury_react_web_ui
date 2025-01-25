@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import WishListButton from "../buttons/wishListBtn.jsx";
 import DeleteBtn from "../buttons/deleteBtn.jsx";
 import CartBtn from "../buttons/cartBtn.jsx";
+import { useDispatch } from "react-redux";
+import { storeProductIdGlobally } from "../../store/actions/itemActions.js";
 
 // ✅ Fully Responsive Styled Card
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -138,6 +140,10 @@ const StyledCardWrapper = React.memo(({ type, item }) => {
     return () => setShow(false); // ✅ Component Disappears with Slide-out Effect
   }, []);
 
+  console.log("item",item)
+
+  const dispatch = useDispatch();
+
   return (
     <Slide direction="up" in={show} mountOnEnter unmountOnExit>
       <StyledCard>
@@ -148,6 +154,7 @@ const StyledCardWrapper = React.memo(({ type, item }) => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              dispatch(storeProductIdGlobally(item?.product_details?.product_id));
               navigate("/Product");
             }}
           />

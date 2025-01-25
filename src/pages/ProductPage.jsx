@@ -3,19 +3,17 @@ import { Box, Grid } from "@mui/material";
 import ProductImage from "../components/productDetailComponent/ProductImage";
 import ProductDetails from "../components/productDetailComponent/ProductDetails";
 
-import { useDispatch } from "react-redux";
-import { findProductByProductId } from "../store/actions/productActions";
-import { data } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";import { findProductByProductId } from "../store/actions/productActions";
 
 const ProductPage = () => {
   const dispatch = useDispatch();
-  
+  const productId = useSelector((state) => state.idStorageReducer.productId);
   
   useEffect(() => {
-    const dumyData = {
-      
-  };
-      dispatch(findProductByProductId());
+
+      dispatch(findProductByProductId({
+        "product_id": productId
+    }));
       
     }, []);
 

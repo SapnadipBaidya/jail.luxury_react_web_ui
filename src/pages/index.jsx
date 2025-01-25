@@ -11,4 +11,3 @@ export const Orders = React.lazy(()=>import('./OrdersPage'))
 export const LoginSignup = React.lazy(() => import('./LoginSignupPage'));
 export const Items = React.lazy(() => import('./itemsPage'));
 export const Product = React.lazy(() => import('./ProductPage'));
-export const About = React.lazy(() => import('./aboutUs'));

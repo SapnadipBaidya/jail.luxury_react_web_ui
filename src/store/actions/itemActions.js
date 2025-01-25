@@ -16,6 +16,22 @@ export const storeCatagoryIdGlobally = (categoryId) => ({
 export const deleteCatagoryIdGlobally = () => ({
   type: "DELETE_CATEGORY_ID_GLOBALLY",
 });
+export const storeProductIdGlobally = (categoryId) => ({
+  type: "STORE_PRODUCT_ID_GLOBALLY",
+  payload: categoryId,
+});
+
+export const deleteProductIdGlobally = () => ({
+  type: "DELETE_PRODUCT_ID_GLOBALLY",
+});
+export const storeProductDetailsIdGlobally = (categoryId) => ({
+  type: "STORE_PRODUCT_DETAILS_ID_GLOBALLY",
+  payload: categoryId,
+});
+
+export const deleteProductDetailsIdGlobally = () => ({
+  type: "DELETE_PRODUCT_DETAILS_ID_GLOBALLY",
+});
 
 export const getSizeFilterByCatagory = (categoryId) => {
   console.log(" getSizeFilterByCatagory categoryId", categoryId);
@@ -37,12 +53,11 @@ export const getSizeFilterByCatagoryFailed = (error) => ({
   payload: error,
 });
 
-
 export const getAllColors = () => {
   console.log(" getAllColors req");
   return (dispatch) => {
     dispatch({
-      type: "FETCH_COLOR_FILTER_REQUEST"
+      type: "FETCH_COLOR_FILTER_REQUEST",
     });
   };
 };

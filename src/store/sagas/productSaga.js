@@ -7,13 +7,13 @@ import { findProductByProductIdFailed, findProductByProductIdSuccess } from "../
 function* handleForFetchProductByPid() {
   try {
     
-      const resPayload = yield select((state) => state?.productReducer?.productPayload);
+      const resPayload = yield select((state) => state?.productReducer?.payload);
       console.log();
 
       const response = yield call(
         makePostAPIcall,
         "http://localhost:8080/api/products/findProductsByPdId",
-        { "product_id": resPayload }
+        { payloadObj: resPayload }
       );
       console.log("response", response);
       yield put(findProductByProductIdSuccess(response?.data?.data));
