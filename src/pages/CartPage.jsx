@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import CartItemComp from "../components/wrappers/cartItemComp";
 import CartItemHeader from "../components/wrappers/cartItemHeader";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserCart } from "../store/actions/cartActions";
+import { useAuth } from "../contexts/AuthProvider";
+import CartCartSkeleton from "../components/wrappers/cartCartSkeleton";
 
 // Styled Components
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -20,7 +24,7 @@ const CheckoutContainer = styled(Box)(({ theme }) => ({
 
 const CartSection = styled(Box)(({ theme }) => ({
   maxWidth: "60%",
-  marginLeft:"10vh",
+  marginLeft: "10vh",
   [theme.breakpoints.up("md")]: {
     width: "65%",
   },
@@ -91,43 +95,67 @@ const cartItems = [
 
 const CartPage = () => {
   const navigate = useNavigate();
+  const disptach = useDispatch();
+  const { user } = useAuth();
+  const cartData = useSelector((state) => state.cartReducer);
+  useEffect(() => {
+    if (user?.id) {
+      const reqPayload = {
+        userId: user?.id,
+      };
+      disptach(fetchUserCart(reqPayload));
+    }
+  }, []);
 
+  console.log("cartData", cartData);
   return (
     <CheckoutContainer>
-      {/* Cart Section */}
-      <CartSection>
-        <Typography variant="h5">Checkout</Typography>
-        <CartItemHeader />
+      {user?.id ? (
+        <>
+          <CartSection>
+            <Typography variant="h5">Checkout</Typography>
+            <CartItemHeader />
 
-        {/* Scrollable Table */}
-        <TableWrapper>
-          <StyledTable>
-            <tbody>
-              {cartItems.map((item, index) => (
-                <CartItemComp item={item} key={`cart_td_${index}`} />
-              ))}
-            </tbody>
-          </StyledTable>
-        </TableWrapper>
+            {/* Scrollable Table */}
+            <TableWrapper>
+              <StyledTable>
+                <tbody>
+                  {cartData?.loading ? (
+                    <CartCartSkeleton cardNum={5} />
+                  ) : (
+                    <>
+                      {" "}
+                      {cartData?.data?.map((item, index) => (
+                        <CartItemComp item={item} key={`cart_td_${index}`} />
+                      ))}
+                    </>
+                  )}
+                </tbody>
+              </StyledTable>
+            </TableWrapper>
 
-        <WishlistButton onClick={() => navigate("/wishlist")}>
-          <Typography>Add More From Wishlist</Typography>
-          <FavoriteIcon fontSize="medium" />
-        </WishlistButton>
-      </CartSection>
+            <WishlistButton onClick={() => navigate("/wishlist")}>
+              <Typography>Add More From Wishlist</Typography>
+              <FavoriteIcon fontSize="medium" />
+            </WishlistButton>
+          </CartSection>
 
-      {/* Summary Section */}
-      <SummarySection>
-        <Typography variant="subtitle1">Subtotal: ₹3300</Typography>
-        <Typography variant="subtitle1">Discount: ₹300</Typography>
-        <Typography variant="subtitle1">Delivery Charge: ₹50</Typography>
-        <Typography variant="h6" mt={2}>
-          Grand Total: ₹3050
-        </Typography>
-        <ProceedButton variant="contained" color="primary" fullWidth>
-          Proceed to Payment
-        </ProceedButton>
-      </SummarySection>
+          {/* Summary Section */}
+          <SummarySection>
+            <Typography variant="subtitle1">Subtotal: ₹3300</Typography>
+            <Typography variant="subtitle1">Discount: ₹300</Typography>
+            <Typography variant="subtitle1">Delivery Charge: ₹50</Typography>
+            <Typography variant="h6" mt={2}>
+              Grand Total: ₹3050
+            </Typography>
+            <ProceedButton variant="contained" color="primary" fullWidth>
+              Proceed to Payment
+            </ProceedButton>
+          </SummarySection>
+        </>
+      ) : (
+        "please login"
+      )}
     </CheckoutContainer>
   );
 };

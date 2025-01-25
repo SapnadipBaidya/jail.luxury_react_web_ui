@@ -4,6 +4,7 @@ import categoryReducer from "./categoryReducer"
 import itemReducer from "./itemReducer";
 import idStorageReducer from "./idStorageReducer";
 import wishlistReducer from "./wishlistReducer";
+import cartReducer from "./cartReducer";
 
 // Combine all reducers
 const rootReducer = combineReducers({
@@ -11,7 +12,8 @@ const rootReducer = combineReducers({
     categoryReducer:categoryReducer,
     itemReducer:itemReducer,
     idStorageReducer:idStorageReducer,
-    wishlistReducer:wishlistReducer
+    wishlistReducer:wishlistReducer,
+    cartReducer:cartReducer
 
 });
 
