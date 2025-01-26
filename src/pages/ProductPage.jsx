@@ -62,6 +62,7 @@ const ProductPage = () => {
         </Grid>
       </Grid>
     </Box>
+    <ProductDetailsTabComponent />
     <RecommandationCard />
     
    
