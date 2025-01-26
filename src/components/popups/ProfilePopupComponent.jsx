@@ -35,6 +35,7 @@ function ProfilePopupComponent() {
         user?  <GenericBtns type="error" btnText="Logout"  executableFunction={HandleLogout}/>: <GenericBtns type="secondary" btnText="Login / SignUp" executableFunction={HandleLogin}/>
       }
       <NavLink variant="body1" component={Link} to={"/orders"}> <GenericBtns type="primary" btnText="Orders" /></NavLink>
+      <NavLink variant="body1" component={Link} to={"/usercontact"}> <GenericBtns type="primary" btnText="Profile" /></NavLink>
       
     </ProfilePopupComponentContainer>
   );

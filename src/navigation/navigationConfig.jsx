@@ -50,6 +50,12 @@ export const navigationConfig = [
     path: '/product',
     component: 'Product',
     render:false
+  },
+  {
+    label: "User Contact",
+    path: "usercontact",
+    component: 'UserContact',
+    render:false
   }
   
 ];
