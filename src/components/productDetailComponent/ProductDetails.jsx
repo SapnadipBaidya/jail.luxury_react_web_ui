@@ -55,14 +55,15 @@ const StyledColorContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ColorCircle = styled(Box)(({ bgcolor, selected }) => ({
+const ColorCircle = styled(Box)(({ bgcolor, selected ,theme}) => ({
   width: "32px",
   height: "32px",
   backgroundColor: bgcolor,
   borderRadius: "50%",
   cursor: "pointer",
-  border: selected ? "2px solid black" : "2px solid transparent",
-  transition: "border 0.2s ease-in-out",
+  border: selected ? `0.25vh dashed ${theme.palette.ascentColor.main}` : "2px solid transparent",
+  transition: "all 0.2s ease-in-out", // ✅ Smooth transition effect
+  transform: selected ? "scale(1.3)" : "scale(1)", // ✅ Enlarges when selected
 }));
 
 const StyledSizeContainer = styled(Box)(({ theme }) => ({
@@ -97,10 +98,10 @@ const QuantityButton = styled(Button)({
   textAlign: "center",
 });
 
-const ProductDetails = () => {
+const ProductDetails = ({price,description,colorArr=[],sizeArr=[]}) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(colors[0].code);
-  
+  console.log("colorArr",colorArr,"sizeArr",sizeArr)
 
   return (
     <StyledContainer>
@@ -108,38 +109,35 @@ const ProductDetails = () => {
       <StyledRating variant="body2" color="text.secondary">
         4.3 ★ 122 Ratings
       </StyledRating>
-      <StyledPrice variant="h6">MRP 2999</StyledPrice>
+      <StyledPrice variant="h6">MRP {price}</StyledPrice>
 
       <StyledDescriptionTitle variant="body1">Description</StyledDescriptionTitle>
       <StyledDescription variant="body2">
-        Dive into the world of sleek storage with this finely crafted leather
-        wallet. This accessory's premium Italian leather offers a smooth touch
-        and a sturdy feel. Its classic black shade and clean design make it the
-        ideal wallet for casual and formal settings.
+       {description}
       </StyledDescription>
 
       <StyledSectionTitle variant="body1">Color</StyledSectionTitle>
       <StyledColorContainer>
-        {colors.map((color) => (
+        {colorArr?.map((color) => (
           <ColorCircle
-            key={color.code}
-            bgcolor={color.code}
-            selected={selectedColor === color.code}
-            onClick={() => setSelectedColor(color.code)}
+            key={color?.details?.color_id+"color_key"}
+            bgcolor={color.details?.color_hex}
+            selected={selectedColor === color?.details?.color_id}
+            onClick={() => setSelectedColor(color?.details?.color_id)}
           />
         ))}
       </StyledColorContainer>
 
       <StyledSectionTitle variant="body1">Size</StyledSectionTitle>
       <StyledSizeContainer>
-        {sizes.map((size) => (
+        {sizeArr.map((size) => (
           <SizeButton
-            key={size}
+            key={size?.details?.pkSizeId+"_size_id"}
             variant="outlined"
-            selected={selectedSize === size}
-            onClick={() => setSelectedSize(size)}
+            selected={selectedSize === size?.details?.pkSizeId}
+            onClick={() => setSelectedSize(size?.details?.pkSizeId)}
           >
-            {size}
+            {size?.details?.size_name}
           </SizeButton>
         ))}
       </StyledSizeContainer>

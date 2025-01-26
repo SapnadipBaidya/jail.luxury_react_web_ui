@@ -16,7 +16,7 @@ function* handleForFetchProductByPid() {
         { payloadObj: resPayload }
       );
       console.log("response", response);
-      yield put(findProductByProductIdSuccess(response?.data?.data));
+      yield put(findProductByProductIdSuccess(response?.data?.responseData));
   
       
     } catch (error) {

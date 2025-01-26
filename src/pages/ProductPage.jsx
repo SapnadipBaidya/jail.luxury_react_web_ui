@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
 import ProductImage from "../components/productDetailComponent/ProductImage";
 import ProductDetails from "../components/productDetailComponent/ProductDetails";
@@ -6,9 +6,20 @@ import ProductDetails from "../components/productDetailComponent/ProductDetails"
 import { useDispatch, useSelector } from "react-redux";import { findProductByProductId } from "../store/actions/productActions";
 
 const ProductPage = () => {
+  const [productDetails,setProductDetails]=useState({
+    itemMRP:"",
+    itemColor:"",
+    itemSize:"",
+    itemProductDetailsId:""
+  });
+
+  function chooseProduct(item){
+    console.log(first)
+  }
   const dispatch = useDispatch();
   const productId = useSelector((state) => state.idStorageReducer.productId);
-  
+  const productData = useSelector((state) => state.productReducer); 
+  console.log("productData",productData?.data?.processedData);
   useEffect(() => {
 
       dispatch(findProductByProductId({
@@ -44,7 +55,7 @@ const ProductPage = () => {
 
         {/* Product Details Section */}
         <Grid item xs={12} md={6}>
-          <ProductDetails />
+          <ProductDetails colorArr={productData?.data?.processedData.allColorsIdOfProduct} sizeArr={productData?.data?.processedData?.allSizesIdOfProduct}/>
           
         </Grid>
       </Grid>
