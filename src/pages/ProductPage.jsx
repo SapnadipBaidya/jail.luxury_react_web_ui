@@ -5,6 +5,7 @@ import ProductDetails from "../components/productDetailComponent/ProductDetails"
 
 import { useDispatch, useSelector } from "react-redux";import { findProductByProductId } from "../store/actions/productActions";
 
+import ProductDetailsTabComponent from "../components/productDetailsTabComponent/ProductDetailsTabComponent";
 import RecommandationCard from "../components/recommandationComponent/RecommandationCard";
 
 const ProductPage = () => {
