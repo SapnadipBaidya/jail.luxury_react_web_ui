@@ -56,6 +56,12 @@ export const navigationConfig = [
     path: "usercontact",
     component: 'UserContact',
     render:false
+  },
+  {
+    label: "Contact Us",
+    path: "contactus",
+    component: 'ContactUs',
+    render:false
   }
   
 ];
