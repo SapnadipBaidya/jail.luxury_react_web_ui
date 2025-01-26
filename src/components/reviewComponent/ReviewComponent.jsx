@@ -7,15 +7,20 @@ const ReviewContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  width: "100%",
+  width: "90%",
   padding: theme.spacing(2),
+  backgroundColor: theme.palette.background.paper,
+  margin: "5vw 5vw",
+  borderRadius: "10px",
+
+  
 }));
 
 const ReviewCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200], // Grey-colored card
-  width: "100%",
-  maxWidth: 600,
-  borderRadius: theme.shape.borderRadius,
+  width: "80%",
+  
+  borderRadius: "20px",
   padding: theme.spacing(2),
   boxShadow: theme.shadows[3],
 }));
@@ -59,23 +64,24 @@ const ReviewComponent = () => {
                 John Doe
               </Typography>
               <Typography variant="caption" color="textSecondary">
-                Verified Buyer
+                
               </Typography>
+              
             </UserInfo>
           </Grid>
         </Grid>
-
-        <ReviewText variant="body2">
-          "This product exceeded my expectations! The quality is amazing, and the customer
-          service was top-notch. Highly recommended!"
-        </ReviewText>
-
         <RatingBox>
           <Rating name="read-only" value={4.5} precision={0.5} readOnly />
           <Typography variant="caption" color="textSecondary">
             2 days ago
           </Typography>
         </RatingBox>
+        <ReviewText variant="body2">
+          "This product exceeded my expectations! The quality is amazing, and the customer
+          service was top-notch. Highly recommended!"
+        </ReviewText>
+
+        
       </ReviewCard>
     </ReviewContainer>
   );
