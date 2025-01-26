@@ -5,6 +5,8 @@ import ProductDetails from "../components/productDetailComponent/ProductDetails"
 
 import { useDispatch, useSelector } from "react-redux";import { findProductByProductId } from "../store/actions/productActions";
 
+import RecommandationCard from "../components/recommandationComponent/RecommandationCard";
+
 const ProductPage = () => {
   const [productDetails,setProductDetails]=useState({
     itemMRP:"",
@@ -29,7 +31,7 @@ const ProductPage = () => {
     }, []);
 
   return (
-    <Box
+    <><Box
       sx={{
         bgcolor: "background.default",
         color: "text.primary",
@@ -60,6 +62,11 @@ const ProductPage = () => {
         </Grid>
       </Grid>
     </Box>
+    <RecommandationCard />
+    
+   
+    
+    </>
   );
 }
 
