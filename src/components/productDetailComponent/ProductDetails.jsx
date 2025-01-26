@@ -1,17 +1,10 @@
-import React, { useState } from "react";
+import { useState,useEffect } from "react";
+import PropTypes from "prop-types"; // ✅ Import PropTypes
 import { Box, Typography, Button, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-// Available sizes
-const sizes = ["S", "M", "L", "XL"];
-
-// Available colors
-const colors = [
-  { name: "Black", code: "#000" },
-  { name: "Maroon", code: "#800000" },
-];
-
+// Styled Components
 const StyledContainer = styled(Box)``;
 
 const StyledTitle = styled(Typography)({
@@ -55,15 +48,15 @@ const StyledColorContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ColorCircle = styled(Box)(({ bgcolor, selected ,theme}) => ({
+const ColorCircle = styled(Box)(({ bgcolor, selected, theme }) => ({
   width: "32px",
   height: "32px",
   backgroundColor: bgcolor,
   borderRadius: "50%",
   cursor: "pointer",
   border: selected ? `0.25vh dashed ${theme.palette.ascentColor.main}` : "2px solid transparent",
-  transition: "all 0.2s ease-in-out", // ✅ Smooth transition effect
-  transform: selected ? "scale(1.3)" : "scale(1)", // ✅ Enlarges when selected
+  transition: "all 0.2s ease-in-out",
+  transform: selected ? "scale(1.3)" : "scale(1)",
 }));
 
 const StyledSizeContainer = styled(Box)(({ theme }) => ({
@@ -85,23 +78,14 @@ const SizeButton = styled(Button)(({ selected }) => ({
   transition: "background 0.2s ease-in-out",
 }));
 
-const QuantityContainer = styled(Box)({
-  display: "flex",
-  alignItems: "center",
-  gap: "8px",
-});
+const ProductDetails = ({ price, description, colorArr = [], sizeArr = []  , defaultProductColorId , defaultProductSizeId }) => {
+  const [selectedSize, setSelectedSize] = useState(defaultProductSizeId);
+  const [selectedColor, setSelectedColor] = useState(defaultProductColorId);
 
-const QuantityButton = styled(Button)({
-  minWidth: "32px",
-  borderRadius: "50%",
-  padding: "0",
-  textAlign: "center",
-});
-
-const ProductDetails = ({price,description,colorArr=[],sizeArr=[]}) => {
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(colors[0].code);
-  console.log("colorArr",colorArr,"sizeArr",sizeArr)
+  useEffect(() => {
+     setSelectedSize(defaultProductSizeId);
+     setSelectedColor(defaultProductColorId);
+  }, [defaultProductColorId , defaultProductSizeId]);
 
   return (
     <StyledContainer>
@@ -112,18 +96,16 @@ const ProductDetails = ({price,description,colorArr=[],sizeArr=[]}) => {
       <StyledPrice variant="h6">MRP {price}</StyledPrice>
 
       <StyledDescriptionTitle variant="body1">Description</StyledDescriptionTitle>
-      <StyledDescription variant="body2">
-       {description}
-      </StyledDescription>
+      <StyledDescription variant="body2">{description}</StyledDescription>
 
       <StyledSectionTitle variant="body1">Color</StyledSectionTitle>
       <StyledColorContainer>
         {colorArr?.map((color) => (
           <ColorCircle
-            key={color?.details?.color_id+"color_key"}
-            bgcolor={color.details?.color_hex}
-            selected={selectedColor === color?.details?.color_id}
-            onClick={() => setSelectedColor(color?.details?.color_id)}
+            key={color?.color_id + "color_key"}
+            bgcolor={color.color_hex}
+            selected={selectedColor === color?.color_id}
+            onClick={() => setSelectedColor(color?.color_id)}
           />
         ))}
       </StyledColorContainer>
@@ -132,12 +114,12 @@ const ProductDetails = ({price,description,colorArr=[],sizeArr=[]}) => {
       <StyledSizeContainer>
         {sizeArr.map((size) => (
           <SizeButton
-            key={size?.details?.pkSizeId+"_size_id"}
+            key={size?.size_id + "_size_id"}
             variant="outlined"
-            selected={selectedSize === size?.details?.pkSizeId}
-            onClick={() => setSelectedSize(size?.details?.pkSizeId)}
+            selected={selectedSize === size?.size_id}
+            onClick={() => setSelectedSize(size?.size_id)}
           >
-            {size?.details?.size_name}
+            {size?.size_name}
           </SizeButton>
         ))}
       </StyledSizeContainer>
@@ -148,24 +130,44 @@ const ProductDetails = ({price,description,colorArr=[],sizeArr=[]}) => {
         Height of model: 189 cm / 6'2", Size: 41
       </Typography>
 
-      {/* Add to Cart & Quantity Section */}
       <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 3, flexDirection: { xs: "column", sm: "row" } }}>
-        <IconButton
-          sx={{
-            border: "1px solid",
-            borderColor: "primary.main",
-            borderRadius: "50%",
-          }}
-        >
+        <IconButton sx={{ border: "1px solid", borderColor: "primary.main", borderRadius: "50%" }}>
           <FavoriteBorderIcon />
         </IconButton>
         <Button variant="contained" color="primary" sx={{ flex: 1, py: 1.5, width: { xs: "100%", sm: "auto" } }}>
           Add to Cart
         </Button>
-        
       </Box>
     </StyledContainer>
   );
+};
+
+// ✅ **PropTypes Validation**
+ProductDetails.propTypes = {
+  price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Price should be a number or string (if formatted)
+  description: PropTypes.string, // Description should be a string
+  defaultProductColorId :PropTypes.number,
+   defaultProductSizeId :PropTypes.number,
+  colorArr: PropTypes.arrayOf(
+    PropTypes.shape({
+      color_id: PropTypes.number.isRequired, // Each color must have a numeric ID
+      color_name: PropTypes.string.isRequired, // Each color must have a name
+      color_hex: PropTypes.string.isRequired, // Each color must have a valid hex code
+    })
+  ),
+  sizeArr: PropTypes.arrayOf(
+    PropTypes.shape({
+      size_id: PropTypes.number.isRequired, // Each size must have a numeric ID
+      size_name: PropTypes.string.isRequired, // Each size must have a name
+    })
+  ),
+};
+
+// ✅ **Default Props (Optional)**
+ProductDetails.defaultProps = {
+  description: "No description available",
+  colorArr: [],
+  sizeArr: [],
 };
 
 export default ProductDetails;

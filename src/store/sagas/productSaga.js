@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from "redux-saga/effects";
-import { makeGetAPIcall, makePostAPIcall } from "../../utils/API_vendor";
+import {  makePostAPIcall } from "../../utils/API_vendor";
 import { findProductByProductIdFailed, findProductByProductIdSuccess } from "../actions/productActions";
 
 
@@ -16,7 +16,7 @@ function* handleForFetchProductByPid() {
         { payloadObj: resPayload }
       );
       console.log("response", response);
-      yield put(findProductByProductIdSuccess(response?.data?.responseData));
+      yield put(findProductByProductIdSuccess(response?.data?.responseData?.product_data));
   
       
     } catch (error) {

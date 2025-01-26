@@ -1,8 +1,7 @@
-import React from "react";
 import ButtonWrapper from "../wrappers/ButtonComp";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch } from "react-redux";
-import { deleteUserWishlist, fetchUserWishlist } from "../../store/actions/wishlistActions";
+import { deleteUserWishlist } from "../../store/actions/wishlistActions";
 import { useAuth } from "../../contexts/AuthProvider";
 
 function DeleteBtn({ variant = "outlined", color = "error" , item}) {

@@ -1,7 +1,7 @@
 const initialState = {
   id: "",
   productId: "",
-  productDetailsId: "",
+  productDetailId: "",
 };
 
 const idStorageReducer = (state = initialState, action) => {
@@ -15,9 +15,9 @@ const idStorageReducer = (state = initialState, action) => {
     case "DELETE_PRODUCT_ID_GLOBALLY":
       return { ...state, productId: "" };
     case "STORE_PRODUCT_DETAILS_ID_GLOBALLY":
-      return { ...state, productDetailsId: action.payload };
+      return { ...state, productDetailId: action.payload };
     case "DELETE_PRODUCT_DETAILS_ID_GLOBALLY":
-      return { ...state, productDetailsId: "" };
+      return { ...state, productDetailId: "" };
     default:
       return state;
   }

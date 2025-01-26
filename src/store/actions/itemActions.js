@@ -16,17 +16,17 @@ export const storeCatagoryIdGlobally = (categoryId) => ({
 export const deleteCatagoryIdGlobally = () => ({
   type: "DELETE_CATEGORY_ID_GLOBALLY",
 });
-export const storeProductIdGlobally = (categoryId) => ({
+export const storeProductIdGlobally = (productId) => ({
   type: "STORE_PRODUCT_ID_GLOBALLY",
-  payload: categoryId,
+  payload: productId,
 });
 
 export const deleteProductIdGlobally = () => ({
   type: "DELETE_PRODUCT_ID_GLOBALLY",
 });
-export const storeProductDetailsIdGlobally = (categoryId) => ({
+export const storeProductDetailsIdGlobally = (productDetailId) => ({
   type: "STORE_PRODUCT_DETAILS_ID_GLOBALLY",
-  payload: categoryId,
+  payload: productDetailId,
 });
 
 export const deleteProductDetailsIdGlobally = () => ({
