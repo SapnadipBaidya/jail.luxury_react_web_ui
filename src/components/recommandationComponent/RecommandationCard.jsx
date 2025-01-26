@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import { 
   Card, 
@@ -59,6 +59,7 @@ const ScrollableContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1, 0),
   width: '100%',
   flexWrap: 'nowrap',
+  cursor: 'grab',
   '&::-webkit-scrollbar': {
     height: '8px',
   },
@@ -81,38 +82,82 @@ const ModalContent = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
 }));
 
+const ProductInfo = styled(Box)(({ theme }) => ({
+  padding: '4px 8px',
+  textAlign: 'center',
+  background: 'rgba(0, 0, 0, 0.5)',
+  color: theme.palette.common.white,
+  borderRadius: '0 0 8px 8px',
+  fontSize: '0.85rem',
+}));
+
 const products = [
-  { id: 1, name: 'Product 1', price: '$19.99', image: 'https://via.placeholder.com/150' },
-  { id: 2, name: 'Product 2', price: '$29.99', image: 'https://via.placeholder.com/150' },
-  { id: 3, name: 'Product 3', price: '$49.99', image: 'https://via.placeholder.com/150' },
-  { id: 4, name: 'Product 4', price: '$59.99', image: 'https://via.placeholder.com/150' },
-  { id: 5, name: 'Product 4', price: '$59.99', image: 'https://via.placeholder.com/150' },
-  { id: 6, name: 'Product 4', price: '$59.99', image: 'https://via.placeholder.com/150' },
-  { id: 7, name: 'Product 4', price: '$59.99', image: 'https://via.placeholder.com/150' },
-  { id: 8, name: 'Product 4', price: '$59.99', image: 'https://via.placeholder.com/150' }
+  { id: 1, name: 'Product 1', price: '$19.99', imageUrl: 'https://via.https://i0.wp.com/jail.luxury/wp-content/uploads/2024/09/5555.png' }
+  
 ];
+
 
 function RecommandationCard() {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const scrollContainerRef = useRef(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    isDragging.current = true;
+    startX.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeft.current = scrollContainerRef.current.scrollLeft;
+    scrollContainerRef.current.style.cursor = 'grabbing';
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX.current) * 2; // Scroll speed multiplier
+    scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const handleMouseUpOrLeave = (e) => {
+    e.preventDefault();
+    isDragging.current = false;
+    scrollContainerRef.current.style.cursor = 'grab';
+  };
 
   return (
     <Root>
       <Typography variant="h6" sx={{ marginBottom: 1 }}>
-        Recommanded Products
+        Recommended Products
       </Typography>
-      <ScrollableContainer>
+      <ScrollableContainer
+        ref={scrollContainerRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUpOrLeave}
+        onMouseLeave={handleMouseUpOrLeave}
+      >
         {products.map((product) => (
           <StyledCard key={product.id}>
             <img
-              src={product.image}
+              src={product.imageUrl}
               alt={product.name}
               style={{
                 width: '100%',
-                height: '100%',
+                height: '60%',
                 objectFit: 'cover',
                 borderRadius: '8px 8px 0 0',
               }}
             />
+            <ProductInfo>
+              <Typography variant="subtitle1" noWrap>
+                {product.name}
+              </Typography>
+              <Typography variant="subtitle2">
+                {product.price}
+              </Typography>
+            </ProductInfo>
             <HoverContent className="hover-content">
               <Button
                 variant="contained"
