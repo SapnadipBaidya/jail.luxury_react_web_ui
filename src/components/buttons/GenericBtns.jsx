@@ -56,6 +56,7 @@ const StyledButton = styled(Button)(({ theme, minwidth }) => ({
   boxShadow: theme.shadows[2],
   transition: 'all 0.3s ease',
   padding:"1vh",
+  color:theme.custom.primaryButtonFontColor,
 
   '&:hover': {
     boxShadow: theme.shadows[4],
@@ -64,12 +65,12 @@ const StyledButton = styled(Button)(({ theme, minwidth }) => ({
 
   '&.MuiButton-contained': {
     backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
+    color:theme.custom.primaryButtonFontColor,
   },
 
   '&.MuiButton-outlined': {
-    borderColor: theme.palette.secondary.main,
-    color: theme.palette.secondary.main,
+    borderColor:theme.palette.primary.main,
+    color:theme.custom.primaryButtonFontColor,
   },
 
   '&.MuiButton-text': {

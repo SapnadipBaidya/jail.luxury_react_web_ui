@@ -67,7 +67,7 @@ export default function ThemeChangeSwitch() {
   return (
     <FormGroup>
       <FormControlLabel
-        control={<MaterialUISwitch sx={{ m: 1 , border:"solid px red"}}  onClick={toggleTheme} />}
+        control={<MaterialUISwitch sx={{ m: 1 }}  onClick={toggleTheme} />}
       />
     </FormGroup>
   );

@@ -18,3 +18,4 @@ export const PrivacyPolicy = React.lazy(() => import('./PrivacyPolicy'));
 export const ReturnRefund = React.lazy(() => import('./ReturnRefund'));
 export const ShippingPolicy = React.lazy(() => import('./ShippingPolicy'));
 export const CancellationPolicy = React.lazy(() => import('./CancellationPolicy'));
+export const AboutUs = React.lazy(() => import('./AboutUs'));

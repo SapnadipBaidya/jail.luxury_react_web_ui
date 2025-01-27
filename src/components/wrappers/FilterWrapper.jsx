@@ -23,7 +23,6 @@ const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   maxHeight: "90vh",
   overflow: "auto",
   padding: theme.spacing(2),
-  border: `solid ${theme.typography.pxToRem(2)} blue`,
   display: "flex",
   flexDirection: "column",
 
@@ -50,7 +49,6 @@ const FilterContent = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   overflowY: "auto",
   padding: theme.spacing(1),
-  border: "solid 2px green",
 
   "&::-webkit-scrollbar": { width: theme.typography.pxToRem(6) },
   "&::-webkit-scrollbar-track": { background: "transparent" },

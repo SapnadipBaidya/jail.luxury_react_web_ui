@@ -20,7 +20,7 @@ const NoDataCard = styled(Box)(({ theme }) => ({
   borderRadius: "12px",
   padding: theme.spacing(4),
   maxWidth: "500px",
-  boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+  boxShadow: `0 0vh 2vh 0.1vh ${theme.palette.secondary.main}`,
   border: `1px solid ${theme.palette.divider}`,
   transition: "transform 0.3s ease-in-out",
   "&:hover": {
@@ -30,7 +30,7 @@ const NoDataCard = styled(Box)(({ theme }) => ({
 
 const IconWrapper = styled(Box)(({ theme }) => ({
   fontSize: "5rem",
-  color: theme.palette.primary.main,
+  color: theme.custom.primaryButtonFontColor,
   marginBottom: theme.spacing(2),
 }));
 

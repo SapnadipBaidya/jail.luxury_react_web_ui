@@ -6,12 +6,10 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 const SortFilterWrapper = styled('div')(({ theme }) => ({
   minWidth: "100%",
   height: "7vh",
-  border: "solid 2px red",
   padding: "1rem",
   display: "flex",
   justifyContent: "flex-end",
-  alignItems: "center",
-  border: "solid 2px green"
+  alignItems: "center"
 }));
 
 function SortFilterComponent({ setShowFilters, showFilters }) {

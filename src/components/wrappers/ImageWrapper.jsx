@@ -28,7 +28,7 @@ const Image = styled("img")({
   height: "100%",
   objectFit: "cover",
 });
-function ImageWrapper({ product, index, currentIndex, to }) {
+function ImageWrapper({ categoryKey , product, index, currentIndex, to }) {
   const dispatch = useDispatch();
 
     const handleClick =(id)=>{
@@ -38,7 +38,7 @@ function ImageWrapper({ product, index, currentIndex, to }) {
   
   return (
     <ImageWrapperComp
-      key={product?.catagory_id}
+      key={categoryKey}
       variant="body1"
       component={Link}
       to={to}
@@ -48,7 +48,8 @@ function ImageWrapper({ product, index, currentIndex, to }) {
       }}
     >
       <Image
-        src={product.catagory_img}
+       key={categoryKey}
+         src={product.catagory_img}
         alt={product.name}
       />
     </ImageWrapperComp>

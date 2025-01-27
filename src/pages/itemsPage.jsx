@@ -22,7 +22,7 @@ function ItemsPage() {
   const itemsArr = useSelector((state) => state.itemReducer);
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const [page, setPage] = useState(1);
   const [currentFilterData, setCurrentFilterData] = useState({
     gender: "",
@@ -96,8 +96,7 @@ function ItemsPage() {
     flexDirection: "column",
     maxWidth: "100vw",
     maxHeight: "100vh",
-    overflow: "hidden",
-    border:"5px solid black"
+    overflow: "hidden"
   };
 
   return (

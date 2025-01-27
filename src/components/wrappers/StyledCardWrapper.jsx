@@ -56,7 +56,6 @@ const ProductImage = styled("img")(({ theme }) => ({
 
   "&:hover": {
     transform: "scale(1.05)",
-    boxShadow: "rgba(255, 202, 166, 0.5) 0px 10px 30px",
   },
 
   [theme.breakpoints.down("md")]: {

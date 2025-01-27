@@ -23,8 +23,7 @@ const SortFilterWrapper = styled(Box)(({ theme }) => ({
   padding: "1rem",
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "center",
-  border: `solid 2px ${theme.palette.primary.main}`,
+  alignItems: "center"
 }));
 
 const DrawerContent = styled(Box)(({ theme }) => ({

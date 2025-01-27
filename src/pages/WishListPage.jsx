@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserWishlist } from '../store/actions/wishlistActions';
 import GridWrapper from '../components/wrappers/GridWrapper';
+import LoginSignupPage from './LoginSignupPage';
 
 function WishListPage() {
   const { user} = useAuth();
@@ -19,7 +20,7 @@ function WishListPage() {
       
         <GridWrapper type="Wishlist" itemsArr={itemsArr} />
       
-      </>:<>Please Login</>}
+      </>:<LoginSignupPage/>}
       
     </div>
   );

@@ -11,7 +11,6 @@ const CardContainer = styled("tr")(({ theme }) => ({
   borderRadius: "16px",
   padding: "15px",
   width: theme.typography.pxToRem(1000),
-  border: "1px solid black",
   marginBottom: "5vh",
 }));
 

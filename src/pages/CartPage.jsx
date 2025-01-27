@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserCart } from "../store/actions/cartActions";
 import { useAuth } from "../contexts/AuthProvider";
 import CartCartSkeleton from "../components/wrappers/cartCartSkeleton";
+import LoginSignupPage from "./LoginSignupPage";
 
 // Styled Components
 const CheckoutContainer = styled(Box)(({ theme }) => ({
@@ -154,7 +155,7 @@ const CartPage = () => {
           </SummarySection>
         </>
       ) : (
-        "please login"
+       <LoginSignupPage/>
       )}
     </CheckoutContainer>
   );

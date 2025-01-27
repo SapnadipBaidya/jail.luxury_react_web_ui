@@ -1,47 +1,111 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Card, TextField, styled } from "@mui/material";
 
+// ✅ Neumorphic Styled Pagination Container (No Borders)
 const StyledPaginationContainer = styled(Card)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  minHeight: "6vh",
+  minHeight: "8vh",
   padding: theme.spacing(2),
   gap: theme.spacing(2),
+  margin:theme.spacing(1),
   flexDirection: "row",
-  boxShadow: "none", // ✅ Removed box shadow
-  backgroundColor: theme.palette.background.default,
-  borderRadius: "1vw",
-  border:`solid 0.1vh ${theme.palette.primary.main}`,
+  borderRadius: "50px",
+  background: theme.palette.mode === "dark" ? "#252525" : "#f0f0f0",
+  boxShadow: theme.palette.mode === "dark"
+    ? "15px 15px 30px #1a1a1a, -15px -15px 30px #3a3a3a"
+    : "20px 20px 60px #c8c8c8, -20px -20px 60px #ffffff",
+  transition: "all 0.3s ease-in-out",
+  border: "none", // ✅ Removed border
+
+  "&:hover": {
+    boxShadow: theme.palette.mode === "dark"
+      ? "5px 5px 15px #121212, -5px -5px 15px #3d3d3d"
+      : "10px 10px 30px #d1d1d1, -10px -10px 30px #ffffff",
+  },
 
   [theme.breakpoints.down("md")]: {
-    minHeight: "8vh",
+    minHeight: "10vh",
     flexDirection: "column",
   },
 }));
 
+// ✅ Styled Input Box (No Borders, Seamless)
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  minWidth: "5vw",
+  maxWidth: "10vw",
+  textAlign: "center",
+  borderRadius: "10px",
+  fontWeight: "bold",
+  background: theme.palette.mode === "dark" ? "#252525" : "#f5f5f5",
+  boxShadow: theme.palette.mode === "dark"
+    ? "inset 4px 4px 8px #1a1a1a, inset -4px -4px 8px #3d3d3d"
+    : "inset 6px 6px 12px #dcdcdc, inset -6px -6px 12px #ffffff",
+  border: "none",
+  outline: "none", 
+
+  "& input": {
+    textAlign: "center",
+    fontSize: "1rem",
+    fontWeight: "600",
+    color: theme.palette.mode === "dark" ? "#ddd" : "#333",
+  },
+  "&:hover, &:focus": {
+    boxShadow: theme.palette.mode === "dark"
+      ? "inset 2px 2px 6px #121212, inset -2px -2px 6px #3d3d3d"
+      : "inset 4px 4px 8px #bcbcbc, inset -4px -4px 8px #ffffff",
+  },
+}));
+
+// ✅ Custom Pagination Styling (No Borders, Soft Look)
+const StyledPagination = styled(Pagination)(({ theme }) => ({
+  "& .MuiPaginationItem-root": {
+    fontSize: "1rem",
+    fontWeight: "bold",
+    borderRadius: "10px",
+    padding: "0.6rem",
+    transition: "all 0.3s ease-in-out",
+    background: "transparent",
+    boxShadow: "none", // ✅ Removed border & shadow
+    color:theme.custom.primaryButtonFontColor,
+    "&:hover": {
+      background: theme.palette.primary.main,
+      color: "#fff",
+      transform: "scale(1.1)",
+    },
+
+    "&.Mui-selected": {
+      background: theme.palette.primary.main,
+      color: "#fff",
+      transform: "scale(1.1)",
+      boxShadow: "none",
+    },
+  },
+}));
+
 export default function PaginationComponent({ page, setPage, count = 10 }) {
-  const [inputValue, setInputValue] = React.useState(page);
+  const [inputValue, setInputValue] = useState(page);
 
   // ✅ Handle Page Change from Pagination Clicks
   const handleChange = (event, value) => {
-    event.stopPropagation(); // Prevent event bubbling
+    event.stopPropagation();
     setPage(value);
-    setInputValue(value); // Sync input field with selected page
+    setInputValue(value);
   };
 
-  // ✅ Update input field but don't change the page immediately
+  // ✅ Update Input Value but Don't Change Page Immediately
   const handleInputChange = (event) => {
-    event.stopPropagation(); // Prevent event leakage
-    let value = event.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
-    setInputValue(value); // Update state but don't trigger page change
+    event.stopPropagation();
+    let value = event.target.value.replace(/[^0-9]/g, "");
+    setInputValue(value);
   };
 
-  // ✅ Change page only when Enter is pressed
+  // ✅ Change Page Only When Enter is Pressed
   const handleKeyDown = (event) => {
-    event.stopPropagation(); // Prevent unintended parent events
+    event.stopPropagation();
     if (event.key === "Enter") {
       let value = inputValue ? Math.min(Math.max(parseInt(inputValue, 10), 1), count) : 1;
       setPage(value);
@@ -51,28 +115,27 @@ export default function PaginationComponent({ page, setPage, count = 10 }) {
   return (
     <StyledPaginationContainer>
       <Stack spacing={2} direction="row" alignItems="center">
-        {/* ✅ Page Input Box with MUI Styling */}
-        <TextField
-          type="number"
-          variant="outlined"
+        {/* ✅ Page Input Box */}
+        <StyledTextField
+          variant="standard" // ✅ Removes MUI border
           size="small"
           value={inputValue}
           onChange={handleInputChange}
-          onKeyDown={handleKeyDown} // ✅ Update page only on Enter press
-          label="Page"
-          inputProps={{ min: 1, max: count }}
-          sx={{ minWidth: "6vw", maxWidth: "12vw", textAlign: "center" }}
+          onKeyDown={handleKeyDown}
+          InputProps={{
+            disableUnderline: true, // ✅ Removes underline border
+          }}
         />
 
-        {/* ✅ Pagination Component with Max 4 Buttons */}
-        <Pagination
+        {/* ✅ Pagination Component */}
+        <StyledPagination
           count={count}
           page={Number(page) || 1}
           onChange={handleChange}
           variant="outlined"
           shape="rounded"
-          siblingCount={0} // ✅ Shows at most 1 page next to the active page
-          boundaryCount={1} // ✅ Shows at most 1 page at the start & end
+          siblingCount={1}
+          boundaryCount={1}
         />
       </Stack>
     </StyledPaginationContainer>

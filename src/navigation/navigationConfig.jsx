@@ -92,6 +92,11 @@ export const navigationConfig = [
     path: "cancellationpolicy",
     component: 'CancellationPolicy',
     render:false
+  },{
+    label: "About Us",
+    path: "aboutus",
+    component: 'AboutUs',
+    render:false
   }
   
   

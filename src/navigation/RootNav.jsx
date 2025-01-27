@@ -118,7 +118,10 @@ const RootNav = () => {
               <MenuIcon />
             </IconButtonWrapper>
           )}
+          {"make a drop down for catagory"}
 
+          {"make a button"}
+          {"make a drop down for catagory"}
           <Link to="/">
             <Logo
               src={
@@ -129,6 +132,7 @@ const RootNav = () => {
               alt="Home Page Logo"
             />
           </Link>
+          
 
           <Box display="flex" flexDirection="row" minWidth="48%" justifyContent="flex-end" alignItems="center">
             {/* Search Button */}

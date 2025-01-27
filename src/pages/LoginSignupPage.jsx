@@ -17,7 +17,8 @@ import GoogleIcon from "@mui/icons-material/Google"; // MUI Google Icon
 
 // ✅ Root Container (Full-Screen Gradient Background)
 const RootContainer = styled(Box)(({ theme }) => ({
-  minHeight: "100vh",
+  minHeight: "80vh",
+  minWidth:"95vw",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
