@@ -13,3 +13,8 @@ export const Items = React.lazy(() => import('./itemsPage'));
 export const Product = React.lazy(() => import('./ProductPage'));
 export const UserContact = React.lazy(() => import('./userContactpage'));
 export const ContactUs = React.lazy(() => import('./ContactUs'));
+export const TermCondition = React.lazy(() => import('./TermCondition'));
+export const PrivacyPolicy = React.lazy(() => import('./PrivacyPolicy'));
+export const ReturnRefund = React.lazy(() => import('./ReturnRefund'));
+export const ShippingPolicy = React.lazy(() => import('./ShippingPolicy'));
+export const CancellationPolicy = React.lazy(() => import('./CancellationPolicy'));

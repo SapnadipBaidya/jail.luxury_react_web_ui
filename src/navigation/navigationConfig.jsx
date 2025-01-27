@@ -62,6 +62,37 @@ export const navigationConfig = [
     path: "contactus",
     component: 'ContactUs',
     render:false
+  },
+  {
+    label: "Term Condition",
+    path: "termcondition",
+    component: 'TermCondition',
+    render:false
+  },
+  {
+    label: "Privacy Policy",
+    path: "privacypolicy",
+    component: 'PrivacyPolicy',
+    render:false
+  },
+  {
+    label: "Return Refund",
+    path: "returnrefund",
+    component: 'ReturnRefund',
+    render:false
+  },
+  {
+    label: "Shipping Policy",
+    path: "shippingpolicy",
+    component: 'ShippingPolicy',
+    render:false
+  },
+  {
+    label: "Cancellation Policy",
+    path: "cancellationpolicy",
+    component: 'CancellationPolicy',
+    render:false
   }
+  
   
 ];
