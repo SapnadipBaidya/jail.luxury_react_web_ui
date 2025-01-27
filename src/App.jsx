@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, CssBaseline, Typography } from '@mui/material';
+import { BrowserRouter as Router } from "react-router-dom";
 import RootNav from './navigation/RootNav.jsx';
 import { ThemeProviderWrapper } from './contexts/themeContext.jsx';
 function App() {
@@ -7,7 +8,9 @@ function App() {
     <ThemeProviderWrapper>
      
       <CssBaseline />
-     <RootNav/>
+      <Router>
+      <RootNav />
+    </Router>
     </ThemeProviderWrapper>
   );
 }

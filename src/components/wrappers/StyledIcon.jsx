@@ -7,9 +7,9 @@ const StyledIconContainer = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: '1.5rem',
-  color: theme.palette.secondary.main, // Use the secondary color from the theme
+  color: theme.custom.primaryButtonFontColor, // Use the secondary color from the theme
   '&:hover': {
-    color: theme.palette.primary.main, // Primary color on hover
+    color: theme.palette.ascentColor.main, // Primary color on hover
   },
   transition: 'color 0.3s ease',
 }));

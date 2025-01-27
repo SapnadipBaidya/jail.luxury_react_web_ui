@@ -87,6 +87,7 @@ console.log("item",item)
           </AnimatedIcon>
         }
         executableFunction={handleWishlistToggle}
+        minWidth="100%"
       />
 
       {/* ✅ Login Dialog */}

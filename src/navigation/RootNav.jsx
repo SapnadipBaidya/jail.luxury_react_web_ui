@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -12,34 +12,33 @@ import {
   ListItemText,
   Box,
   useMediaQuery,
-  Paper,
   Menu,
-  MenuItem
+  MenuItem,
+  Card,
 } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
-import Person4Icon from "@mui/icons-material/Person4";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import ThemeChangeSwitch from "./ThemeChangeSwitch";
 import { navigationConfig } from "./navigationConfig";
-import homePageLogo from "../assets/images/webp/homePageLogo.webp";
-import StyledIcon from "../components/wrappers/StyledIcon";
-import ProfilePopupComponent from "../components/popups/ProfilePopupComponent";
+import homePageLogoDark from "../assets/images/webp/homePageLogoDark.webp";
+import homePageLogoLight from "../assets/images/webp/homePageLogoLight.webp";
 import * as Pages from "../pages/index";
 import { useAuth } from "../contexts/AuthProvider";
 import { useDispatch } from "react-redux";
 import { fetchAllCategories } from "../store/actions/categoryActions";
 import Footer from "../pages/Footer";
+import ProfileBtn from "../components/buttons/profileBtn";
 
-// Styled Components
+// ✅ Styled Components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }));
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "flex-end",
 });
 
 const Logo = styled("img")({
@@ -51,29 +50,21 @@ const NavLinksContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: theme.spacing(2),
+  paddingRight: "5vh",
 }));
 
 const SearchContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  gap: theme.spacing(1),
   position: "relative",
+  paddingRight: "2vh",
 }));
 
-// Full-Width Dropdown Styles
-const FullScreenSearch = styled(Paper)(({ theme }) => ({
-  position: "absolute",
-  top: "100%",
-  left: 0,
-  width: "100vw",
-  height: "10vh",
-  backgroundColor: theme.palette.background.paper,
-  zIndex: 1000,
-  padding: theme.spacing(2),
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  boxShadow: theme.shadows[5],
+const IconButtonWrapper = styled(IconButton)(({ theme }) => ({
+  color: theme.custom?.primaryButtonFontColor || theme.palette.text.primary,
+  "&:hover": {
+    color: theme.palette.ascentColor.main,
+  },
 }));
 
 const DrawerContainer = styled(Box)({
@@ -88,90 +79,162 @@ const renderRoutes = (routes) =>
   ));
 
 const RootNav = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
-  const [searchBarOpen, setSearchBarOpen] = useState(false);
+  const [searchAnchor, setSearchAnchor] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [profileMenuAnchor, setProfileMenuAnchor] = useState(null);
+  const [profileBtnWidth, setProfileBtnWidth] = useState(null); // ✅ Store Profile Button Width
 
   useEffect(() => {
     dispatch(fetchAllCategories());
   }, [dispatch]);
 
   const toggleDrawer = (open) => () => setDrawerOpen(open);
-  const handleProfileMenuOpen = (event) => setProfileMenuAnchor(event.currentTarget);
+  const handleProfileMenuOpen = (event) => {
+    setProfileMenuAnchor(event.currentTarget);
+    setProfileBtnWidth(event.currentTarget.offsetWidth); // ✅ Get button width dynamically
+  };
   const handleProfileMenuClose = () => setProfileMenuAnchor(null);
 
+  const handleSearchClick = (event) => {
+    setSearchAnchor(event.currentTarget);
+  };
+  const handleSearchClose = () => {
+    setSearchAnchor(null);
+  };
+
   return (
-    <Router>
+    <>
       <StyledAppBar position="sticky">
         <StyledToolbar>
           {isTablet && (
-            <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+            <IconButtonWrapper edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
               <MenuIcon />
-            </IconButton>
+            </IconButtonWrapper>
           )}
 
-          <Link to={"/"}>
-            <Logo src={homePageLogo} alt="Home Page Logo" />
+          <Link to="/">
+            <Logo
+              src={
+                theme.palette.mode === "light"
+                  ? homePageLogoLight
+                  : homePageLogoDark
+              }
+              alt="Home Page Logo"
+            />
           </Link>
 
-          <SearchContainer>
-            <IconButton color="inherit" onClick={() => setSearchBarOpen(true)}>
-              <SearchIcon />
-            </IconButton>
+          <Box display="flex" flexDirection="row" minWidth="48%" justifyContent="flex-end" alignItems="center">
+            {/* Search Button */}
+            <SearchContainer>
+              <IconButtonWrapper color="inherit" onClick={handleSearchClick}>
+                <SearchIcon />
+              </IconButtonWrapper>
 
-            {searchBarOpen && (
-              <FullScreenSearch>
-                <InputBase
-                  fullWidth
-                  placeholder="Search for products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  inputProps={{ "aria-label": "search" }}
-                  style={{
-                    flexGrow: 1,
-                    fontSize: "1.2rem",
-                    paddingLeft: "1rem",
-                  }}
-                />
-                <IconButton onClick={() => setSearchBarOpen(false)}>
-                  <CloseIcon />
-                </IconButton>
-              </FullScreenSearch>
-            )}
-          </SearchContainer>
+              {/* ✅ Centered MUI Dropdown for Search */}
+              <Menu
+                open={Boolean(searchAnchor)}
+                onClose={handleSearchClose}
+                anchorReference="anchorPosition"
+                anchorPosition={{ top: 65 }} 
+                PaperProps={{
+                  sx: {
+                    minWidth: "100vw",
+                    maxWidth: "600px",
+                    padding: 2,
+                    marginTop: 0,
+                    backgroundColor: theme.palette.background.paper,
+                    boxShadow: theme.shadows[5],
+                    borderRadius: 2,
+                    position: "fixed",
+                  },
+                }}
+              >
+                <MenuItem disableRipple>
+                  <InputBase
+                    fullWidth
+                    placeholder="Search for products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    inputProps={{ "aria-label": "search" }}
+                    sx={{
+                      flexGrow: 1,
+                      fontSize: "1.2rem",
+                      paddingLeft: "1rem",
+                      outline: "none",
+                    }}
+                  />
+                  <IconButton onClick={handleSearchClose}>
+                    <CloseIcon />
+                  </IconButton>
+                </MenuItem>
+              </Menu>
+            </SearchContainer>
 
-          {!isTablet && (
+            {/* Navigation Links */}
             <NavLinksContainer>
               {navigationConfig
                 .filter((item) => item.render)
                 .map(({ path, label }) => (
-                  <Typography key={path} variant="body1" component={Link} to={path} style={{ color: "inherit", textDecoration: "none" }}>
+                  <Typography key={path} variant="body1" component={Link} to={path} sx={{ color: "inherit", textDecoration: "none" }}>
                     {label}
                   </Typography>
                 ))}
             </NavLinksContainer>
-          )}
 
-          {/* Profile Dropdown using MUI Menu */}
-          <Box display="flex" alignItems="center" gap={1}>
-            <Menu
-              anchorEl={profileMenuAnchor}
-              open={Boolean(profileMenuAnchor)}
-              onClose={handleProfileMenuClose}
-            >
-              <MenuItem onClick={handleProfileMenuClose}>My Account</MenuItem>
-              <MenuItem onClick={handleProfileMenuClose}>Orders</MenuItem>
-              <MenuItem onClick={handleProfileMenuClose}>Logout</MenuItem>
-            </Menu>
-
+            {/* Profile & Theme Switch */}
+            <ProfileBtn text={user?.id ? user?.name : "Profile"} executableFunction={handleProfileMenuOpen} />
             <ThemeChangeSwitch />
           </Box>
+
+          {/* Profile Menu (Fixed Width Matching Profile Button) */}
+          <Menu
+            anchorEl={profileMenuAnchor}
+            open={Boolean(profileMenuAnchor)}
+            onClose={handleProfileMenuClose}
+            PaperProps={{
+              sx: {
+                width: profileBtnWidth || "auto", // ✅ Dynamic width matching Profile Button
+                minWidth: "auto",
+                boxShadow: theme.shadows[5],
+                borderRadius: 2,
+              },
+            }}
+          >
+            {!user?.id ? (
+              <MenuItem
+                onClick={() => {
+                  handleProfileMenuClose();
+                  navigate("/login-signup");
+                }}
+              >
+                <Card sx={{ padding: "1vw" }}>
+                  <h2>Welcome</h2>
+                  <h6>To access account and <br /> manage orders...</h6>
+                  Login / Signup
+                </Card>
+              </MenuItem>
+            ) : (
+              <>
+                <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+                <MenuItem onClick={handleProfileMenuClose}>Orders</MenuItem>
+                <MenuItem
+                  onClick={(e) => {
+                    handleProfileMenuClose(e);
+                    logout();
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              </>
+            )}
+          </Menu>
         </StyledToolbar>
       </StyledAppBar>
 
@@ -190,7 +253,7 @@ const RootNav = () => {
 
       <Routes>{renderRoutes(navigationConfig)}</Routes>
       <Footer />
-    </Router>
+    </>
   );
 };
 
