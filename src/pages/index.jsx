@@ -11,7 +11,7 @@ export const Orders = React.lazy(()=>import('./OrdersPage'))
 export const LoginSignup = React.lazy(() => import('./LoginSignupPage'));
 export const Items = React.lazy(() => import('./itemsPage'));
 export const Product = React.lazy(() => import('./ProductPage'));
-export const UserContact = React.lazy(() => import('./userContactpage'));
+export const UserContact = React.lazy(() => import('./UserContactPage'));
 export const ContactUs = React.lazy(() => import('./ContactUs'));
 export const TermCondition = React.lazy(() => import('./TermCondition'));
 export const PrivacyPolicy = React.lazy(() => import('./PrivacyPolicy'));

@@ -222,8 +222,16 @@ const RootNav = () => {
               </MenuItem>
             ) : (
               <>
-                <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+                
                 <MenuItem onClick={handleProfileMenuClose}>Orders</MenuItem>
+                <MenuItem
+                  onClick={(e) => {
+                    handleProfileMenuClose(e);
+                    navigate("usercontact");
+                  }}
+                >
+                  profile
+                </MenuItem>
                 <MenuItem
                   onClick={(e) => {
                     handleProfileMenuClose(e);
