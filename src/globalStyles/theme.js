@@ -20,7 +20,8 @@ export const lightTheme = createTheme({
   custom: { // ✅ Define custom properties here
     btnBgColor:"#dbd5cd",
     primaryButtonFontColor: "#363230",
-    btnBorder:"#363230"
+    btnBorder:"#363230",
+    cardBg:"#E4E2E0"
   },
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
@@ -41,13 +42,14 @@ export const darkTheme = createTheme(lightTheme, {
       main: "#CCB878",
     },
     background: {
-      default: "#322c2a",
+      default: "#312d2b",
       paper: "#1d1d1d",
     },
   },
   custom: { // ✅ Define custom properties here
     btnBgColor:"#363230",
     primaryButtonFontColor: "#dbd5cd",
-    btnBorder:"black" // profile btn border
+    btnBorder:"black" ,// profile btn border
+    cardBg:"#747272"
   },
 });
