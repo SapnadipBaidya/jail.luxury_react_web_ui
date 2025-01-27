@@ -18,7 +18,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.custom.cardBg,
   boxShadow: "0 4px 8px rgba(164, 180, 112, 0.1)",
   borderRadius: theme.shape.borderRadius,
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-around",
@@ -27,7 +27,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   maxHeight: theme.typography.pxToRem(350),
 
   "&:hover": {
-    transform: "scale(1.02)",
+    transform: "scale(1.02) !important",
     boxShadow: "rgba(0, 0, 0, 0.25) 0px 13px 47px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
   },
 
@@ -47,7 +47,7 @@ const ProductImage = styled("img")(({ theme }) => ({
   objectFit: "cover",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.custom.cardBg,
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important",
 
   minWidth: theme.typography.pxToRem(200),
   minHeight: theme.typography.pxToRem(200),
