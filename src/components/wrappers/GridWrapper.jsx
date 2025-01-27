@@ -6,8 +6,8 @@ import StyledCardSkeleton from "./StyledCardSkeleton";
 import NoDataComponent from "./noDataComponent";
 
 const GridWrapperComponent = styled("div")(({ theme }) => ({
-  minWidth: "70vw",
-  minHeight: "10vh", // ✅ Ensure it takes full height of parent
+  minWidth: "100%",
+  minHeight: "75vh", // ✅ Ensure it takes full height of parent
   maxHeight: "80vh",
   border: "solid 1px red",
   overflowY: "auto", // ✅ Enable vertical scrolling
@@ -20,8 +20,8 @@ const GridWrapperComponent = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     minWidth: "99vw",
     maxWidth: "99vw",
-    minHeight: "84.5vh",
-    maxHeight: "84.5vh",
+    height: "70vh",
+    maxHeight: "80vh",
     padding: "0.5rem",
     justifyContent: "space-evenly",
   },

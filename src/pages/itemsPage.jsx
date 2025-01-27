@@ -11,6 +11,8 @@ import FilterWrapper from "../components/wrappers/FilterWrapper";
 import { useAuth } from "../contexts/AuthProvider";
 import SortFilterComponent from "../components/wrappers/sortFilterComponent";
 import PaginationComponent from "../components/paginationComponent/pagination";
+import SortFilterComponentMobile from "../components/wrappers/SortFilterComponentMobile";
+import FilterDrawerMobile from "../components/wrappers/FilterDrawerMobile";
 
 function ItemsPage() {
   const { user } = useAuth();
@@ -19,7 +21,6 @@ function ItemsPage() {
   const categoryId = useSelector((state) => state.idStorageReducer.id);
   const itemsArr = useSelector((state) => state.itemReducer);
   const isMobileOrTablet = useMediaQuery(theme.breakpoints.down("md"));
-
 
   const [showFilters, setShowFilters] = useState(true);
   const [page, setPage] = useState(1);
@@ -36,8 +37,8 @@ function ItemsPage() {
     price: [0, 1000000],
   });
 
-  const fetchItems = (selectedFilter)=>{
-    const payload = { 
+  const fetchItems = (selectedFilter) => {
+    const payload = {
       productFilters: {
         sizes: selectedFilter?.size,
         colors: selectedFilter?.color,
@@ -51,13 +52,13 @@ function ItemsPage() {
       userId: user?.id,
     };
     dispatch(findItemsByCatagoryId(payload));
-  }
+  };
 
   useEffect(() => {
     fetchItems(currentFilterData);
     dispatch(getSizeFilterByCatagory(categoryId));
     dispatch(getAllColors());
-  }, [categoryId,page]);
+  }, [categoryId, page]);
 
   const onClearFilters = () => {
     const defaultFilters = {
@@ -67,15 +68,15 @@ function ItemsPage() {
       price: [0, 1000000],
     };
     setSelectedFilters(defaultFilters);
-    setCurrentFilterData(defaultFilters)
+    setCurrentFilterData(defaultFilters);
 
     const payload = {
       productFilters: {
         fk_category_id: categoryId,
         priceStart: 0,
         priceEnd: 1000000,
-        sizes:[],
-        colors:[]
+        sizes: [],
+        colors: [],
       },
       defaultFlag: 1,
       page,
@@ -86,100 +87,89 @@ function ItemsPage() {
   };
 
   const onApplyFilters = (filters) => {
-    setCurrentFilterData(filters)
+    setCurrentFilterData(filters);
     fetchItems(filters);
   };
 
   const containerStyle = {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    width: "99vw",
-    height: "99vh",
+    maxWidth: "100vw",
+    maxHeight: "100vh",
     overflow: "hidden",
+    border:"5px solid black"
   };
 
   return (
     <div style={containerStyle}>
-      {/* 🔹 SortFilterComponent on Desktop - Always on top */}
-      {!isMobileOrTablet && (
-        <SortFilterComponent setShowFilters={setShowFilters} showFilters={showFilters} />
-      )}
+      
 
       {/* 🔄 Main Content Container */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: isMobileOrTablet ? "column" : "row",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          width: "100%",
+          maxWidth: "99%",
+          flexGrow: 1,
+          overflow: "auto"
+        }}
+      >
+        {/* 🔹 Desktop View: Show Both Filter & Grid */}
+
+        {isMobileOrTablet ? (
+          <FilterDrawerMobile
+            onApplyFilters={onApplyFilters}
+            onClearFilters={onClearFilters}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+            setShowFilters={setShowFilters}
+            showFilters={showFilters}
+          />
+        ) : (
+          <FilterWrapper
+            onApplyFilters={onApplyFilters}
+            onClearFilters={onClearFilters}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+          />
+        )}
+
         <div
           style={{
             display: "flex",
-            flexDirection: isMobileOrTablet ? "column" : "row",
-            justifyContent: "center",
-            alignItems: "flex-start",
+            flexDirection: "column",
+            alignItems: "center",
             width: "100%",
-            maxWidth: "99%",
-            flexGrow: 1,
-            overflow: "auto",
+            flexGrow: 1
           }}
         >
-          {/* 🔹 Desktop View: Show Both Filter & Grid */}
-          {!isMobileOrTablet && showFilters && (
-            <FilterWrapper
-              onApplyFilters={onApplyFilters}
-              onClearFilters={onClearFilters}
-              selectedFilters={selectedFilters}
-              setSelectedFilters={setSelectedFilters}
-            />
-          )}
-
-          {/* 🔹 Mobile View: Show Either Filter or Grid */}
           {isMobileOrTablet ? (
-            showFilters ? (
-              <FilterWrapper
-                onApplyFilters={onApplyFilters}
-                onClearFilters={onClearFilters}
-                selectedFilters={selectedFilters}
-                setSelectedFilters={setSelectedFilters}
-              />
-            ) : (
-              <GridWrapper
-                itemsArr={itemsArr}
-                type="Product"
-                setShowFilters={setShowFilters}
-                showFilters={showFilters}
-                page={page}
-                setPage={setPage}
-              />
-            )
-          ) : (
-            /* 🔹 Desktop View: Show GridWrapper Always */
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "100%",
-                flexGrow: 1,
-              }}
-            >
-              <GridWrapper
-                itemsArr={itemsArr}
-                type="Product"
-                setShowFilters={setShowFilters}
-                showFilters={showFilters}
-                page={page}
-                setPage={setPage}
-              />
-
-              {/* 🔹 Pagination Always Under GridWrapper */}
-              <PaginationComponent page={page} setPage={setPage} />
-            </div>
-          )}
-        </div>
-   
-
-      {/* 🔹 Mobile/Tablet: SortFilterComponent is Fixed at Bottom */}
-      {isMobileOrTablet && (
-        <SortFilterComponent setShowFilters={setShowFilters} showFilters={showFilters} />
+        <SortFilterComponentMobile
+          setShowFilters={setShowFilters}
+          showFilters={showFilters}
+        />
+      ) : (
+        <SortFilterComponent
+          setShowFilters={setShowFilters}
+          showFilters={showFilters}
+        />
       )}
+          <GridWrapper
+            itemsArr={itemsArr}
+            type="Product"
+            setShowFilters={setShowFilters}
+            showFilters={showFilters}
+            page={page}
+            setPage={setPage}
+          />
+
+          {/* 🔹 Pagination Always Under GridWrapper */}
+          <PaginationComponent page={page} setPage={setPage} />
+        </div>
+      </div>
     </div>
   );
 }

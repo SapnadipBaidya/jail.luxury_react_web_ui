@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import PropTypes from "prop-types"; // ✅ Import PropTypes
+import PropTypes from "prop-types";
 import { Card, CardContent, Typography, Box, Fade, Slide, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
@@ -8,78 +8,92 @@ import WishListButton from "../buttons/wishListBtn.jsx";
 import CartBtn from "../buttons/cartBtn.jsx";
 import { useDispatch } from "react-redux";
 import { storeProductIdGlobally, storeProductDetailsIdGlobally } from "../../store/actions/itemActions.js";
+import TruncatedText from "./TruncatedText.jsx";
 
-// ✅ Card Container (Enhanced with Hover & Shadows)
+// ✅ Responsive Styled Card
 const StyledCard = styled(Card)(({ theme }) => ({
   position: "relative",
   overflow: "visible",
   padding: theme.spacing(1),
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.custom.cardBg,
   boxShadow: "0 4px 8px rgba(164, 180, 112, 0.1)",
   borderRadius: theme.shape.borderRadius,
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important",
-  maxWidth:theme.typography.pxToRem(250),
-  maxHeight:theme.typography.pxToRem(350),
-  display:"flex",
-  flexDirection:"column",
-  justifyContent:"space-around",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-around",
+  alignItems: "center",
+  maxWidth: theme.typography.pxToRem(250),
+  maxHeight: theme.typography.pxToRem(350),
+
   "&:hover": {
-    transform: "scale(1.02) !important",
-    boxShadow: "rgba(0, 0, 0, 0.25) 0px 13px 47px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px"
+    transform: "scale(1.02)",
+    boxShadow: "rgba(0, 0, 0, 0.25) 0px 13px 47px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
+  },
+
+  [theme.breakpoints.down("md")]: {
+    maxWidth: theme.typography.pxToRem(200),
+    maxHeight: theme.typography.pxToRem(280),
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: theme.typography.pxToRem(130),
+    maxHeight: theme.typography.pxToRem(220),
   },
 }));
 
-// ✅ Product Image with Hover Lift Effect
+// ✅ Responsive Product Image
 const ProductImage = styled("img")(({ theme }) => ({
-  width: theme.typography.pxToRem(200),
-  height: theme.typography.pxToRem(200),
   objectFit: "cover",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: "#ffcaa6",
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important",
+  backgroundColor: theme.custom.cardBg,
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+
+  minWidth: theme.typography.pxToRem(200),
+  minHeight: theme.typography.pxToRem(200),
+  maxWidth: theme.typography.pxToRem(200),
+  maxHeight: theme.typography.pxToRem(200),
+
   "&:hover": {
     transform: "scale(1.05)",
     boxShadow: "rgba(255, 202, 166, 0.5) 0px 10px 30px",
-    transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  },
+
+  [theme.breakpoints.down("md")]: {
+    minWidth: theme.typography.pxToRem(180),
+    minHeight: theme.typography.pxToRem(180),
+    maxWidth: theme.typography.pxToRem(180),
+    maxHeight: theme.typography.pxToRem(180),
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    minWidth: theme.typography.pxToRem(100),
+    minHeight: theme.typography.pxToRem(100),
+    maxWidth: theme.typography.pxToRem(100),
+    maxHeight: theme.typography.pxToRem(100),
   },
 }));
 
-// ✅ Text Styling
-const TextContainer = styled(CardContent)({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  textAlign: "center",
-});
-
-const ProductTitle = styled(Typography)({
-  fontWeight: "bold",
-  fontSize: "1.1rem",
-  lineHeight: "1.4",
-});
-
-const ProductPrice = styled(Typography)(({ theme }) => ({
-  fontSize: "1rem",
-  fontWeight: "bold",
-  color: theme.palette.primary.main,
-}));
-
-// ✅ Footer Buttons
-const CardFooter = styled(Box)({
+// ✅ Responsive Footer Buttons
+const CardFooter = styled(Box)(({ theme }) => ({
   width: "100%",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   paddingTop: "10px",
   borderTop: "1px solid #ddd",
-});
 
+  [theme.breakpoints.down("sm")]: {
+    paddingTop: "5px",
+    flexDirection: "column",
+    gap: theme.spacing(1),
+  },
+}));
 
 const StyledCardWrapper = React.memo(({ type, item }) => {
   const mainImgUrl = item?.gallery_details?.gallery?.images?.[0] || "/placeholder.jpg";
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -97,31 +111,33 @@ const StyledCardWrapper = React.memo(({ type, item }) => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              dispatch(storeProductIdGlobally(item?.product_details?.product_id)); 
+              dispatch(storeProductIdGlobally(item?.product_details?.product_id));
               dispatch(storeProductDetailsIdGlobally(item?.product_details?.products_details_id));
               navigate("/Product");
             }}
           />
         </Fade>
 
-        <TextContainer>
-          <ProductTitle variant="body1">{item?.product_details?.product_name || "No Name"}</ProductTitle>
-          <ProductPrice variant="subtitle1">₹{item?.product_details?.product_price_inr || "N/A"}</ProductPrice>
-        </TextContainer>
+        {/* ✅ Responsive Text */}
+        <TruncatedText maxWidth="90%">
+          {item?.product_details?.product_name || "No Name"}
+        </TruncatedText>
+        <TruncatedText maxWidth="90%">
+          ₹{item?.product_details?.product_price_inr || "N/A"}
+        </TruncatedText>
 
-        {/* Footer Buttons */}
+        {/* ✅ Footer Buttons */}
         <CardFooter>
-
           {type === "Product" ? <WishListButton item={item} /> : <CartBtn />}
-
         </CardFooter>
       </StyledCard>
     </Slide>
   );
 });
 
+// ✅ Prop Type Validation
 StyledCardWrapper.propTypes = {
-  type: PropTypes.string.isRequired, // Required string type
+  type: PropTypes.string.isRequired,
   item: PropTypes.shape({
     gallery_details: PropTypes.shape({
       gallery: PropTypes.shape({

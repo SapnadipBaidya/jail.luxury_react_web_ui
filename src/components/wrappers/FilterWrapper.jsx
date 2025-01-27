@@ -19,7 +19,7 @@ import FilterColorComponent from "../generics/filterColorComponent";
 const FilterWrapperComponent = styled(Box)(({ theme }) => ({
   minWidth: theme.typography.pxToRem(260),
   maxWidth: theme.typography.pxToRem(350),
-  minHeight: "90vh",
+  minHeight: "91vh",
   maxHeight: "90vh",
   overflow: "auto",
   padding: theme.spacing(2),
