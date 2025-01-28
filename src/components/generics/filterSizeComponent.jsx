@@ -7,15 +7,19 @@ const FilterTitle = styled(Typography)(({ theme }) => ({
     fontWeight: "bold",
     textTransform: "uppercase",
     fontSize: theme.typography.pxToRem(16),
+    color: theme.custom.primaryButtonFontColor,
   }));
 
 const CheckboxWrapper =   styled(Checkbox)(({ theme }) => ({
-    color: theme.palette.ascentColor.main,
+  color: theme.custom.primaryButtonFontColor,
     "&.Mui-checked": { color: theme.palette.ascentColor.main },
     
 
   }));
 
+const StyledText = styled(Typography)(({ theme }) => ({
+    color: theme.custom.primaryButtonFontColor,
+  }));
   
 function FilterSizeComponent({ sizeArr,sizeLoading ,selectedFilters,handleCheckboxChange}) {
     console.log("sizeArr",sizeArr)
@@ -31,7 +35,7 @@ function FilterSizeComponent({ sizeArr,sizeLoading ,selectedFilters,handleCheckb
               onChange={() => handleCheckboxChange("size", size?.pk_size_id)}
             />
           }
-          label={size?.size_name}
+          label={<StyledText>{size?.size_name}</StyledText>}
         />
       )):<><TextAreaSkeleton/></>}
     </>
