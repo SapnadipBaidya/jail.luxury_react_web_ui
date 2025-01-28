@@ -65,7 +65,7 @@ function HeroSection() {
           component={Link}
           index={index}
           currentIndex={currentIndex}
-          to={"/items"}
+          to={"/product-category"}
         />
       ))}
 

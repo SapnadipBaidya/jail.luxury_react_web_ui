@@ -74,7 +74,7 @@ function CircleComponent({ data }) {
 
   return (
     <CircleWrapper>
-      <CircleContainer radius="12.5vh" key={"/items"} component={Link} to={"/items"}>
+      <CircleContainer radius="12.5vh" key={"/product-category"} component={Link} to={"/product-category"}>
         {!isLoaded && (
           <Spinner radius="20vh">
             {/* iOS-like spinner */}

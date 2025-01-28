@@ -34,10 +34,10 @@ const StyledVideo = styled("video")(({ theme }) => ({
 function BestSellerCard({ title, videoSrc }) {
   return (
     <BestSellerComp
-      key="/items"
+      key="/product-category"
       variant="body1"
       component={Link}
-      to="/items"
+      to="/product-category"
     >
       <h3>{title}</h3>
       <StyledVideo

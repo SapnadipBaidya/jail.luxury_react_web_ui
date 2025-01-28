@@ -41,7 +41,7 @@ export const navigationConfig = [
   },
   {
     label: "Items",
-    path: '/items',
+    path: '/product-category',
     component: 'Items',
     render:false
   },
@@ -59,7 +59,7 @@ export const navigationConfig = [
   },
   {
     label: "Contact Us",
-    path: "contactus",
+    path: "contact",
     component: 'ContactUs',
     render:false
   },

@@ -56,8 +56,8 @@ const Footer = () => {
         {/* Company Section */}
         <Grid item xs={12} sm={2}>
           <SectionTitle variant="h6">Company</SectionTitle>
-          <FooterLink to="/aboutus">About Us</FooterLink>
-          <FooterLink to="/contactus">Contact Us</FooterLink>
+          <FooterLink to="/about">About Us</FooterLink>
+          <FooterLink to="/contact">Contact Us</FooterLink>
         </Grid>
 
         {/* Shop Products Section */}
