@@ -6,7 +6,7 @@ import React, { useRef, useEffect, useState } from "react";
 // ✅ Styled Typography with Overflow Handling
 const StyledTypography = styled(Typography)(({ theme }) => ({
   fontWeight: "bold",
-  fontSize: "1.1rem",
+  fontSize: theme.typography.pxToRem(14),
   lineHeight: "1.4",
   maxHeight: "3vh",
   maxWidth: "20vw",

@@ -30,6 +30,7 @@ import { useDispatch } from "react-redux";
 import { fetchAllCategories } from "../store/actions/categoryActions";
 import Footer from "../pages/Footer";
 import ProfileBtn from "../components/buttons/profileBtn";
+import TruncatedText from "../components/wrappers/TruncatedText";
 
 // ✅ Styled Components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -73,7 +74,11 @@ const DrawerContainer = styled(Box)({
 
 const renderRoutes = (routes) =>
   routes.map(({ path, component, children }) => (
-    <Route key={path} path={path} element={React.createElement(Pages[component])}>
+    <Route
+      key={path}
+      path={path}
+      element={React.createElement(Pages[component])}
+    >
       {children && renderRoutes(children)}
     </Route>
   ));
@@ -114,7 +119,12 @@ const RootNav = () => {
       <StyledAppBar position="sticky">
         <StyledToolbar>
           {isTablet && (
-            <IconButtonWrapper edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+            <IconButtonWrapper
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={toggleDrawer(true)}
+            >
               <MenuIcon />
             </IconButtonWrapper>
           )}
@@ -132,9 +142,14 @@ const RootNav = () => {
               alt="Home Page Logo"
             />
           </Link>
-          
 
-          <Box display="flex" flexDirection="row" minWidth="48%" justifyContent="flex-end" alignItems="center">
+          <Box
+            display="flex"
+            flexDirection="row"
+            minWidth="48%"
+            justifyContent="flex-end"
+            alignItems="center"
+          >
             {/* Search Button */}
             <SearchContainer>
               <IconButtonWrapper color="inherit" onClick={handleSearchClick}>
@@ -146,7 +161,7 @@ const RootNav = () => {
                 open={Boolean(searchAnchor)}
                 onClose={handleSearchClose}
                 anchorReference="anchorPosition"
-                anchorPosition={{ top: 65 }} 
+                anchorPosition={{ top: 65 }}
                 PaperProps={{
                   sx: {
                     minWidth: "100vw",
@@ -186,14 +201,29 @@ const RootNav = () => {
               {navigationConfig
                 .filter((item) => item.render)
                 .map(({ path, label }) => (
-                  <Typography key={path} variant="body1" component={Link} to={path} sx={{ color: "inherit", textDecoration: "none" }}>
+                  <Typography
+                    key={path}
+                    variant="body1"
+                    component={Link}
+                    to={path}
+                    sx={{ color: "inherit", textDecoration: "none" }}
+                  >
                     {label}
                   </Typography>
                 ))}
             </NavLinksContainer>
 
             {/* Profile & Theme Switch */}
-            <ProfileBtn text={user?.id ? user?.name : "Profile"} executableFunction={handleProfileMenuOpen} />
+            <ProfileBtn
+              text={
+                user?.id ? (
+                  <TruncatedText maxWidth="9vw">{user?.name}</TruncatedText>
+                ) : (
+                  "Profile"
+                )
+              }
+              executableFunction={handleProfileMenuOpen}
+            />
             <ThemeChangeSwitch />
           </Box>
 
@@ -220,13 +250,14 @@ const RootNav = () => {
               >
                 <Card sx={{ padding: "1vw" }}>
                   <h2>Welcome</h2>
-                  <h6>To access account and <br /> manage orders...</h6>
+                  <h6>
+                    To access account and <br /> manage orders...
+                  </h6>
                   Login / Signup
                 </Card>
               </MenuItem>
             ) : (
               <>
-                
                 <MenuItem onClick={handleProfileMenuClose}>Orders</MenuItem>
                 <MenuItem
                   onClick={(e) => {
@@ -252,7 +283,11 @@ const RootNav = () => {
 
       {/* Drawer for Mobile */}
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <DrawerContainer role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+        <DrawerContainer
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
           <List>
             {navigationConfig.map(({ path, label }) => (
               <ListItem button key={path} component={Link} to={path}>
