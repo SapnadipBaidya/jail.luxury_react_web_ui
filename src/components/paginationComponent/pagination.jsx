@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Card, TextField, styled } from "@mui/material";
@@ -98,6 +98,7 @@ export default function PaginationComponent({ page, setPage, count = 10 }) {
 
   // ✅ Update Input Value but Don't Change Page Immediately
   const handleInputChange = (event) => {
+    event.preventDefault();
     event.stopPropagation();
     let value = event.target.value.replace(/[^0-9]/g, "");
     setInputValue(value);
@@ -120,7 +121,7 @@ export default function PaginationComponent({ page, setPage, count = 10 }) {
           variant="standard" // ✅ Removes MUI border
           size="small"
           value={inputValue}
-          onChange={handleInputChange}
+          onChange={(e)=>handleInputChange(e)}
           onKeyDown={handleKeyDown}
           InputProps={{
             disableUnderline: true, // ✅ Removes underline border
